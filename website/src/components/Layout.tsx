@@ -29,8 +29,8 @@ export default function Layout({ children }: { children: ReactNode }) {
   }, [location.pathname])
 
   return (
-    <>
-      <div className="watermark"><img src="/astra/favicon.svg" alt="" />
+    <div className="layout-root">
+      <div className="watermark"><img src="/astra/favicon.svg" alt="" /></div>
       <ParticleBackground />
 
       <header className="header">
@@ -84,6 +84,6 @@ export default function Layout({ children }: { children: ReactNode }) {
           </footer>
         </div>
       </main>
-    </>
+    </div>
   )
 }
