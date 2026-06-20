@@ -29,7 +29,7 @@ public class DefaultAstra implements Astra {
     private final Map<String, GoalInfo> goals;
     private final List<ActionInfo> actions;
     private final Map<String, CompoundTaskDef> compoundTasks;
-    private final GoapPlanner planner;
+    private final Planner planner;
     private final PlannerType plannerType;
     private final DefaultEventBus eventBus;
     private final DefaultInterceptorChain interceptorChain;
@@ -53,7 +53,7 @@ public class DefaultAstra implements Astra {
         this.planner = createPlanner(plannerType);
     }
 
-    private GoapPlanner createPlanner(PlannerType type) {
+    private Planner createPlanner(PlannerType type) {
         for (PlannerProvider provider : ServiceLoader.load(PlannerProvider.class)) {
             if (provider.type() == type) {
                 return provider.create(config, compoundTasks, actions);
@@ -67,18 +67,18 @@ public class DefaultAstra implements Astra {
         Objects.requireNonNull(goalName, "Goal name must not be null");
         Objects.requireNonNull(initialState, "Initial state must not be null");
 
-        if (plannerType == PlannerType.HTN) {
+        if (plannerType == PlannerType.STRUCTURAL) {
             if (!compoundTasks.containsKey(goalName)) {
                 throw new GoalNotFoundException(goalName);
             }
             CompoundTaskDef ct = compoundTasks.get(goalName);
-            GoalInfo htnGoal = new GoalInfo() {
+            GoalInfo structGoal = new GoalInfo() {
                 @Override public String getName() { return goalName; }
                 @Override public String getDescription() { return ct.getDescription(); }
                 @Override public Map<String, String> getCondition() { return Map.of(); }
-                @Override public String toString() { return "HTN:" + goalName; }
+                @Override public String toString() { return "Structural:" + goalName; }
             };
-            return planner.plan(initialState, htnGoal, actions);
+            return planner.plan(initialState, structGoal, actions);
         }
 
         GoalInfo goal = goals.get(goalName);
@@ -97,7 +97,7 @@ public class DefaultAstra implements Astra {
         Objects.requireNonNull(initialState, "Initial state must not be null");
 
         GoalInfo goal;
-        if (plannerType == PlannerType.HTN) {
+        if (plannerType == PlannerType.STRUCTURAL) {
             if (!compoundTasks.containsKey(goalName)) {
                 throw new GoalNotFoundException(goalName);
             }
@@ -106,7 +106,7 @@ public class DefaultAstra implements Astra {
                 @Override public String getName() { return goalName; }
                 @Override public String getDescription() { return ct.getDescription(); }
                 @Override public Map<String, String> getCondition() { return Map.of(); }
-                @Override public String toString() { return "HTN:" + goalName; }
+                @Override public String toString() { return "Structural:" + goalName; }
             };
         } else {
             goal = goals.get(goalName);
@@ -212,7 +212,7 @@ public class DefaultAstra implements Astra {
         private final DefaultInterceptorChain interceptorChain = new DefaultInterceptorChain();
         private final LifecycleManager lifecycleManager = new LifecycleManager();
         private final MapConfigProvider config = new MapConfigProvider();
-        private PlannerType plannerType = PlannerType.GOAP;
+        private PlannerType plannerType = PlannerType.COST_BASED;
 
         public Builder() {
             config.set("astra.planner.heuristic", "unmatched");
@@ -243,9 +243,9 @@ public class DefaultAstra implements Astra {
                 "agent", agentInstance.getClass().getName()));
             int actionCount = AgentScanner.scanActions(agentInstance).size();
             int goalCount = AgentScanner.scanGoals(agentInstance).size();
-            int htnCount = AgentScanner.scanCompoundTasks(agentInstance).size();
+            int structCount = AgentScanner.scanCompoundTasks(agentInstance).size();
             log.info("Agent '{}' registered ({} actions, {} goals, {} compound tasks)",
-                agentInstance.getClass().getSimpleName(), actionCount, goalCount, htnCount);
+                agentInstance.getClass().getSimpleName(), actionCount, goalCount, structCount);
             return this;
         }
 

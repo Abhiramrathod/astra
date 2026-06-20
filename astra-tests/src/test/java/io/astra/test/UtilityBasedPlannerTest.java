@@ -3,16 +3,16 @@ package io.astra.test;
 import io.astra.api.*;
 import io.astra.api.result.*;
 import io.astra.core.DefaultAstra;
-import io.astra.test.agent.UtilityTestAgent;
+import io.astra.test.agent.UtilityBasedTestAgent;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class UtilityPlannerTest {
+class UtilityBasedPlannerTest {
     @Test
     void picksHighUtilityAction() {
         Astra astra = DefaultAstra.builder()
-            .register(new UtilityTestAgent())
-            .withPlanner(PlannerType.UTILITY)
+            .register(new UtilityBasedTestAgent())
+            .withPlanner(PlannerType.UTILITY_BASED)
             .build();
 
         Plan plan = astra.plan("Finish", WorldStates.of("ready", "true"));
@@ -24,8 +24,8 @@ class UtilityPlannerTest {
     @Test
     void achievesGoal() {
         Astra astra = DefaultAstra.builder()
-            .register(new UtilityTestAgent())
-            .withPlanner(PlannerType.UTILITY)
+            .register(new UtilityBasedTestAgent())
+            .withPlanner(PlannerType.UTILITY_BASED)
             .build();
 
         ExecutionResult r = astra.executeWithResult("Finish", WorldStates.of("ready", "true"));

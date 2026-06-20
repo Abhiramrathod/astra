@@ -12,7 +12,7 @@ export default function Samples() {
         <strong>File:</strong> <code>astra-sample/src/main/java/io/astra/sample/agent/CoffeeAgent.java</code>
       </p>
       <p>
-        A coffee-making agent demonstrating GOAP, Utility AI, and Hybrid planners.
+        A coffee-making agent demonstrating cost-based, utility-based, and hybrid planning.
         The agent starts with coffee beans and must go through four steps to serve coffee.
       </p>
 
@@ -55,8 +55,8 @@ export default function Samples() {
 
       <h3>Planner behavior</h3>
       <ul>
-        <li><strong>GOAP:</strong> Finds the optimal path (all 4 actions, cost=4). Ignores utility values.</li>
-        <li><strong>Utility AI:</strong> Picks actions greedily by utility (dynamic utility considered for BrewCoffee). Executes all actions regardless of goal.</li>
+        <li><strong>Cost-based:</strong> Finds the optimal path (all 4 actions, cost=4). Ignores utility values.</li>
+        <li><strong>Utility-based:</strong> Picks actions greedily by utility (dynamic utility considered for BrewCoffee). Executes all actions regardless of goal.</li>
         <li><strong>Hybrid:</strong> Same greedy selection but stops early if goal is met.</li>
       </ul>
 
@@ -67,8 +67,8 @@ export default function Samples() {
         <strong>File:</strong> <code>astra-sample/src/main/java/io/astra/sample/agent/CookingAgent.java</code>
       </p>
       <p>
-        A dinner-making agent demonstrating HTN planning with compound tasks and
-        conditional decomposition.
+        A dinner-making agent demonstrating structural decomposition with compound tasks and
+        conditional branching.
       </p>
 
       <h3>Primitive actions</h3>
@@ -102,15 +102,15 @@ public void makeDinner() {}`}</code></pre>
 
       <h3>Goal</h3>
       <p>
-        Unlike GOAP-style agents, HTN agents don't use <code>@Goal</code> annotations.
+        Unlike goal-driven agents, structural decomposition agents don't use <code>@Goal</code> annotations.
         The planner reads the root compound task name from the goal name passed to
         <code>astra.executeWithResult("MakeDinner", ...)</code>.
       </p>
 
-      <h3>Running the HTN demo</h3>
+      <h3>Running the decomposition demo</h3>
       <pre><code>{`Astra astra = DefaultAstra.builder()
     .register(new CookingAgent())
-    .withPlanner(PlannerType.HTN)
+    .withPlanner(PlannerType.STRUCTURAL)
     .build();
 
 // Uses the "pasta" decomposition (all 4 steps)
@@ -132,7 +132,7 @@ astra.executeWithResult("MakeDinner",
         <li>Create a class annotated with <code>@Agent</code></li>
         <li>Add methods annotated with <code>@Action</code> for each primitive behavior</li>
         <li>Add a method annotated with <code>@Goal</code> to define what success looks like</li>
-        <li>For HTN demos, add methods annotated with <code>@CompoundTask</code> and <code>@Decomposition</code></li>
+        <li>For decomposition demos, add methods annotated with <code>@CompoundTask</code> and <code>@Decomposition</code></li>
         <li>Build and run with <code>DefaultAstra.builder().register(new YourAgent()).withPlanner(...)</code></li>
       </ol>
     </>

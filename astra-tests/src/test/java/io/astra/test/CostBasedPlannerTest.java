@@ -3,16 +3,16 @@ package io.astra.test;
 import io.astra.api.*;
 import io.astra.api.result.*;
 import io.astra.core.DefaultAstra;
-import io.astra.test.agent.GoapTestAgent;
+import io.astra.test.agent.CostBasedTestAgent;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class GoapPlannerTest {
+class CostBasedPlannerTest {
     @Test
     void findsCheapestPlan() {
         Astra astra = DefaultAstra.builder()
-            .register(new GoapTestAgent())
-            .withPlanner(PlannerType.GOAP)
+            .register(new CostBasedTestAgent())
+            .withPlanner(PlannerType.COST_BASED)
             .build();
 
         Plan plan = astra.plan("ReachA", WorldStates.of("a", "false"));
@@ -26,8 +26,8 @@ class GoapPlannerTest {
     @Test
     void achievesGoal() {
         Astra astra = DefaultAstra.builder()
-            .register(new GoapTestAgent())
-            .withPlanner(PlannerType.GOAP)
+            .register(new CostBasedTestAgent())
+            .withPlanner(PlannerType.COST_BASED)
             .build();
 
         ExecutionResult r = astra.executeWithResult("ReachA", WorldStates.of("a", "false"));
@@ -39,8 +39,8 @@ class GoapPlannerTest {
     @Test
     void returnsNonExecutablePlanWhenNoPath() {
         Astra astra = DefaultAstra.builder()
-            .register(new GoapTestAgent())
-            .withPlanner(PlannerType.GOAP)
+            .register(new CostBasedTestAgent())
+            .withPlanner(PlannerType.COST_BASED)
             .build();
 
         Plan plan = astra.plan("ReachA", WorldStates.of());

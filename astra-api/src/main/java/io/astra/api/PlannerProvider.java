@@ -6,7 +6,7 @@ import java.util.Map;
 
 public interface PlannerProvider {
     PlannerType type();
-    GoapPlanner create(AstraConfig config,
+    Planner create(AstraConfig config,
                        Map<String, CompoundTaskDef> compoundTasks,
                        List<ActionInfo> actions);
 }

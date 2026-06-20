@@ -6,7 +6,7 @@ import io.astra.annotation.fact.Fact;
 import io.astra.annotation.goal.Goal;
 
 @Agent
-public class GoapTestAgent {
+public class CostBasedTestAgent {
     @Action(name = "CheapAction", cost = 1,
         preconditions = @Fact(name = "a", value = "false"),
         effects = @Fact(name = "a", value = "true"))

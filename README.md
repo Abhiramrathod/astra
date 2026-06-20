@@ -10,12 +10,12 @@
 [![Java 17+](https://img.shields.io/badge/java-17%2B-blue)](https://adoptium.net)
 [![License](https://img.shields.io/badge/license-Apache%202.0-green)](LICENSE)
 
-**Astra** is a production-grade, pure-Java agent framework with zero LLM dependency. It provides four built-in planning strategies — A\* GOAP, Utility AI, Hybrid, and HTN — all selectable via a single builder API.
+**Astra** is a production-grade, pure-Java agent framework with zero LLM dependency. It provides four built-in planning strategies — cost-based, utility-based, hybrid, and structural decomposition — all selectable via a single builder API.
 
 ```java
 Astra astra = DefaultAstra.builder()
     .register(new CoffeeAgent())
-    .withPlanner(PlannerType.GOAP)
+    .withPlanner(PlannerType.COST_BASED)
     .build();
 
 ExecutionResult r = astra.executeWithResult("MakeCoffee",
@@ -26,7 +26,7 @@ ExecutionResult r = astra.executeWithResult("MakeCoffee",
 
 ## Features
 
-- **Four planners in one framework** — GOAP (A\*), Utility AI, Hybrid, HTN
+- **Four planners in one framework** — cost-based, utility-based, hybrid, structural
 - **Annotation-driven agent DSL** — `@Agent`, `@Action`, `@Goal`, `@CompoundTask`, `@Decomposition`, `@Fact`
 - **Dynamic utility** — state-aware utility functions via `utilityMethod`
 - **SPI plugin system** — third-party planners via `ServiceLoader`
@@ -46,7 +46,7 @@ ExecutionResult r = astra.executeWithResult("MakeCoffee",
 ```
 astra-parent
 ├── astra-annotations   — @Agent, @Action, @Goal, @CompoundTask, @Decomposition, @Fact
-├── astra-api           — Interfaces: Astra, GoapPlanner, ActionInfo, WorldState, EventBus, ...
+├── astra-api           — Interfaces: Astra, Planner, ActionInfo, WorldState, EventBus, ...
 ├── astra-utils         — ClassPathScanner, WorldStateSerializer (Jackson)
 ├── astra-scanner       — AgentScanner (reflects annotations into API types)
 ├── astra-config        — MapConfigProvider, PropertiesFileConfigProvider
@@ -146,7 +146,7 @@ public class Main {
     public static void main(String[] args) {
         Astra astra = DefaultAstra.builder()
             .register(new CoffeeAgent())
-            .withPlanner(PlannerType.GOAP)
+            .withPlanner(PlannerType.COST_BASED)
             .build();
 
         ExecutionResult result = astra.executeWithResult(
@@ -163,28 +163,28 @@ public class Main {
 
 ## Planners
 
-### A\* GOAP (Goal-Oriented Action Planning)
+### Cost-Based Planner
 
-- **Strategy**: A\* search over the action space. Finds the lowest-cost (optimal) sequence of actions.
+- **Strategy**: Optimal search over the action space. Finds the lowest-cost (optimal) sequence of actions.
 - **Heuristic**: Count of unmatched goal conditions (admissible for single-effect actions).
 - **Configurable**: `astra.planner.heuristic` (unmatched / zero), `astra.planner.maxIterations`.
 - **Best for**: Deterministic worlds where optimality matters more than speed.
 
-### Utility AI
+### Utility-Based Planner
 
 - **Strategy**: Greedy selection — at each step, pick the highest-utility applicable action.
 - **Utility = value / cost**: Normalizes utility by cost for apples-to-apples comparison.
 - **Configurable**: `astra.planner.maxIterations`.
 - **Best for**: Real-time decisions where speed matters and near-optimal is acceptable.
 
-### Hybrid (Utility + GOAP)
+### Hybrid Planner
 
 - **Strategy**: Greedy forward search guided by utility, but checks goal satisfaction after each step.
-- **Combines**: Utility's fast selection with GOAP's goal-awareness.
+- **Combines**: Fast utility selection with goal-awareness.
 - **Configurable**: `astra.planner.maxIterations`.
 - **Best for**: Balancing efficiency with goal-directed behavior.
 
-### HTN (Hierarchical Task Network)
+### Structural Planner
 
 - **Strategy**: Recursive decomposition of compound tasks into primitive actions.
 - **Declarative**: Define tasks, methods (decompositions), and preconditions.
@@ -224,17 +224,17 @@ The method must be `public`, take a single `WorldState` parameter, and return a 
 
 To add a custom planner:
 
-1. Implement `GoapPlanner` and `PlannerProvider`
+1. Implement `Planner` and `PlannerProvider`
 2. Register the provider in `META-INF/services/io.astra.api.PlannerProvider`
 3. Add your module to the classpath
 
 ```java
 public class MyPlannerProvider implements PlannerProvider {
     @Override
-    public PlannerType type() { return PlannerType.GOAP; }
+    public PlannerType type() { return PlannerType.COST_BASED; }
 
     @Override
-    public GoapPlanner create(AstraConfig config,
+    public Planner create(AstraConfig config,
                               Map<String, CompoundTaskDef> compoundTasks,
                               List<ActionInfo> actions) {
         return new MyPlanner(config);
@@ -248,8 +248,8 @@ public class MyPlannerProvider implements PlannerProvider {
 
 | Property | Default | Description |
 |---|---|---|
-| `astra.planner.maxIterations` | 10000 (GOAP), 20 (Utility), 100 (Hybrid), 200 (HTN) | Max search iterations |
-| `astra.planner.heuristic` | `unmatched` | GOAP heuristic mode (`unmatched` / `zero`) |
+| `astra.planner.maxIterations` | 10000 (cost-based), 20 (utility-based), 100 (hybrid), 200 (structural) | Max search iterations |
+| `astra.planner.heuristic` | `unmatched` | Cost-based planner heuristic mode (`unmatched` / `zero`) |
 
 Set via the builder:
 
@@ -291,10 +291,10 @@ Requires JDK 17+. The Maven wrapper (`mvnw`) handles the rest automatically.
 ```
 
 Tests cover all four planners:
-- **GoapPlannerTest** (3 tests) — cheapest path, goal achievement, no-path case
-- **UtilityPlannerTest** (2 tests) — highest utility selection, goal achievement
+- **CostBasedPlannerTest** (3 tests) — cheapest path, goal achievement, no-path case
+- **UtilityBasedPlannerTest** (2 tests) — highest utility selection, goal achievement
 - **HybridPlannerTest** (2 tests) — sequential plan, execution
-- **HtnPlannerTest** (5 tests) — full decomposition, conditional branching, execution, unknown task
+- **StructuralPlannerTest** (5 tests) — full decomposition, conditional branching, execution, unknown task
 
 ---
 

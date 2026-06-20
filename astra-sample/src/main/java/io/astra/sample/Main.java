@@ -14,17 +14,17 @@ public class Main {
     private static final Logger log = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
-        demoGoap();
+        demoCostBased();
         demoUtility();
         demoHybrid();
-        demoHtn();
+        demoStructural();
     }
 
-    static void demoGoap() {
-        System.out.println("\n========== GOAP (A*) Planner Demo ==========");
+    static void demoCostBased() {
+        System.out.println("\n========== Cost-Based Planner Demo ==========");
         Astra astra = DefaultAstra.builder()
             .register(new CoffeeAgent())
-            .withPlanner(PlannerType.GOAP)
+            .withPlanner(PlannerType.COST_BASED)
             .build();
         Plan plan = astra.plan("MakeCoffee", WorldStates.of("hasBeans", "true"));
         System.out.println("Plan steps:");
@@ -32,22 +32,22 @@ public class Main {
             System.out.println("  " + a.getName() + " - " + a.getDescription());
         }
         ExecutionResult r = astra.executeWithResult("MakeCoffee", WorldStates.of("hasBeans", "true"));
-        System.out.println("GOAP result: success=" + r.isSuccess() + ", steps=" + r.getActionRecords().size());
+        System.out.println("CostBased result: success=" + r.isSuccess() + ", steps=" + r.getActionRecords().size());
     }
 
     static void demoUtility() {
         System.out.println("\n========== Utility AI Planner Demo ==========");
         Astra astra = DefaultAstra.builder()
             .register(new CoffeeAgent())
-            .withPlanner(PlannerType.UTILITY)
+            .withPlanner(PlannerType.UTILITY_BASED)
             .withConfig("astra.planner.maxIterations", "10")
             .build();
         ExecutionResult r = astra.executeWithResult("MakeCoffee", WorldStates.of("hasBeans", "true"));
-        System.out.println("Utility result: success=" + r.isSuccess() + ", steps=" + r.getActionRecords().size());
+        System.out.println("UtilityBased result: success=" + r.isSuccess() + ", steps=" + r.getActionRecords().size());
     }
 
     static void demoHybrid() {
-        System.out.println("\n========== Hybrid (Utility + GOAP) Planner Demo ==========");
+        System.out.println("\n========== Hybrid Planner Demo ==========");
         Astra astra = DefaultAstra.builder()
             .register(new CoffeeAgent())
             .withPlanner(PlannerType.HYBRID)
@@ -57,13 +57,13 @@ public class Main {
         System.out.println("Hybrid result: success=" + r.isSuccess() + ", steps=" + r.getActionRecords().size());
     }
 
-    static void demoHtn() {
-        System.out.println("\n========== HTN Planner Demo ==========");
+    static void demoStructural() {
+        System.out.println("\n========== Structural Planner Demo ==========");
         Astra astra = DefaultAstra.builder()
             .register(new CookingAgent())
-            .withPlanner(PlannerType.HTN)
+            .withPlanner(PlannerType.STRUCTURAL)
             .build();
         ExecutionResult r = astra.executeWithResult("MakeDinner", WorldStates.of("hasIngredients", "true", "hasKnife", "true", "hasPot", "true"));
-        System.out.println("HTN result: success=" + r.isSuccess() + ", steps=" + r.getActionRecords().size());
+        System.out.println("Structural result: success=" + r.isSuccess() + ", steps=" + r.getActionRecords().size());
     }
 }

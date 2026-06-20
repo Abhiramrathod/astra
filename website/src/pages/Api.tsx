@@ -46,7 +46,7 @@ public @interface Goal {
 }`}</code></pre>
 
       <h3>@CompoundTask</h3>
-      <p>Defines a compound task for HTN decomposition. Repeatable.</p>
+      <p>Defines a compound task for structural decomposition. Repeatable.</p>
       <pre><code>{`@Repeatable(CompoundTasks.class)
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
@@ -100,9 +100,9 @@ public @interface Fact {
         </tbody>
       </table>
 
-      <h3>GoapPlanner</h3>
+      <h3>Planner</h3>
       <p>Implemented by all planners. The core planning contract.</p>
-      <pre><code>{`public interface GoapPlanner {
+      <pre><code>{`public interface Planner {
     Plan plan(WorldState currentState,
               GoalInfo goal,
               List<ActionInfo> actions);
@@ -261,18 +261,18 @@ WorldStates.of(String k1, String v1, String k2, String v2, ...)`}</code></pre>
 
       <h3>PlannerType</h3>
       <pre><code>{`public enum PlannerType {
-    GOAP, UTILITY, HYBRID, HTN
+    COST_BASED, UTILITY_BASED, HYBRID, STRUCTURAL
 }`}</code></pre>
 
       <h3>PlannerProvider</h3>
       <pre><code>{`public interface PlannerProvider {
     PlannerType type();
-    GoapPlanner create(AstraConfig config,
+    Planner create(AstraConfig config,
                        Map<String, CompoundTaskDef> compoundTasks,
                        List<ActionInfo> actions);
 }`}</code></pre>
 
-      <h2>HTN Types</h2>
+      <h2>Decomposition Types</h2>
 
       <h3>CompoundTaskDef</h3>
       <pre><code>{`public class CompoundTaskDef {
@@ -303,7 +303,7 @@ WorldStates.of(String k1, String v1, String k2, String v2, ...)`}</code></pre>
     .register(agent)                            // Register a single agent
     .register(agent1, agent2)                   // Register multiple agents
     .scan("com.myapp.agents")                   // Scan package for @Agent classes
-    .withPlanner(PlannerType.GOAP)              // Select planner (default: GOAP)
+    .withPlanner(PlannerType.COST_BASED)        // Select planner (default: cost-based)
     .withConfig("key", "value")                 // Set a config value
     .withConfig(Map.of("k1", "v1"))             // Set multiple config values
     .withConfig(configProvider)                 // Use a custom config provider

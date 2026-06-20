@@ -4,7 +4,7 @@ import io.astra.annotation.*;
 import io.astra.annotation.action.*;
 import io.astra.annotation.fact.*;
 import io.astra.annotation.goal.*;
-import io.astra.annotation.htn.*;
+import io.astra.annotation.decomposition.*;
 import io.astra.api.*;
 import java.lang.reflect.*;
 import java.util.*;

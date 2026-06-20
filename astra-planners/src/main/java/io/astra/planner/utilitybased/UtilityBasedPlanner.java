@@ -1,4 +1,4 @@
-package io.astra.planner.hybrid;
+package io.astra.planner.utilitybased;
 
 import io.astra.api.*;
 import io.astra.api.config.AstraConfig;
@@ -8,65 +8,51 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.stream.*;
 
-public class HybridPlannerImpl implements GoapPlanner {
-    private static final Logger log = LoggerFactory.getLogger(HybridPlannerImpl.class);
+public class UtilityBasedPlanner implements Planner {
+    private static final Logger log = LoggerFactory.getLogger(UtilityBasedPlanner.class);
     private final AstraConfig config;
 
-    public HybridPlannerImpl(AstraConfig config) {
+    public UtilityBasedPlanner(AstraConfig config) {
         this.config = config;
     }
 
     @Override
     public Plan plan(WorldState currentState, GoalInfo goal, List<ActionInfo> actions) {
         int maxSteps = config != null
-            ? config.getOrDefault("astra.planner.maxIterations", Integer.class, 100)
-            : 100;
+            ? config.getOrDefault("astra.planner.maxIterations", Integer.class, 20)
+            : 20;
 
-        log.debug("Hybrid planning for goal '{}' from {} (max {} steps)",
-            goal.getName(), currentState, maxSteps);
+        log.debug("Utility planning from {} for up to {} steps", currentState, maxSteps);
         List<ActionInfo> planActions = new ArrayList<>();
         Set<String> usedActionNames = new HashSet<>();
         WorldState state = currentState;
 
         for (int i = 0; i < maxSteps; i++) {
-            if (state.matches(goal.getCondition())) {
-                log.info("Goal '{}' satisfied after {} steps", goal.getName(), i);
-                break;
-            }
-
             final WorldState current = state;
             List<ActionInfo> applicable = actions.stream()
                 .filter(a -> current.matches(a.getPreconditions()))
+                .filter(a -> !usedActionNames.contains(a.getName()))
                 .collect(Collectors.toList());
 
             if (applicable.isEmpty()) {
-                log.warn("No applicable actions at step {} before goal reached", i);
+                log.debug("No applicable actions at step {}", i);
                 break;
             }
 
             ActionInfo best = applicable.stream()
-                .filter(a -> !usedActionNames.contains(a.getName()))
                 .max(Comparator.comparingDouble(a -> getUtility(a, current)))
                 .orElse(null);
 
-            if (best == null) {
-                log.warn("All applicable actions already used, stopping");
-                break;
-            }
+            if (best == null) break;
 
-            log.debug("Step {}: '{}' (utility={})", i, best.getName(), getUtility(best, state));
+            log.debug("Step {}: picked '{}' (utility={})", i, best.getName(), getUtility(best, state));
             usedActionNames.add(best.getName());
             state = applyEffects(state, best);
             planActions.add(best);
         }
 
-        if (!state.matches(goal.getCondition())) {
-            log.warn("Hybrid plan did not reach goal '{}'", goal.getName());
-            return new DefaultPlan(List.of(), 0);
-        }
-
         double totalCost = planActions.stream().mapToDouble(ActionInfo::getCost).sum();
-        log.info("Hybrid plan: {} actions, cost={}", planActions.size(), totalCost);
+        log.info("Utility plan: {} actions, total cost={}", planActions.size(), totalCost);
         return new DefaultPlan(planActions, totalCost);
     }
 

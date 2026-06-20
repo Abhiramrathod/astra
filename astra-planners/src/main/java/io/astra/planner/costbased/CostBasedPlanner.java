@@ -1,4 +1,4 @@
-package io.astra.planner.goap;
+package io.astra.planner.costbased;
 
 import io.astra.api.*;
 import io.astra.api.config.AstraConfig;
@@ -7,15 +7,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.*;
 
-public class GoapPlannerImpl implements GoapPlanner {
-    private static final Logger log = LoggerFactory.getLogger(GoapPlannerImpl.class);
+public class CostBasedPlanner implements Planner {
+    private static final Logger log = LoggerFactory.getLogger(CostBasedPlanner.class);
     private final AstraConfig config;
 
-    public GoapPlannerImpl(AstraConfig config) {
+    public CostBasedPlanner(AstraConfig config) {
         this.config = config;
     }
 
-    public GoapPlannerImpl() {
+    public CostBasedPlanner() {
         this.config = null;
     }
 
@@ -25,7 +25,7 @@ public class GoapPlannerImpl implements GoapPlanner {
         validateState(currentState);
         validateActions(actions);
 
-        PriorityQueue<AStarNode> open = new PriorityQueue<>(
+        PriorityQueue<SearchNode> open = new PriorityQueue<>(
             Comparator.comparingDouble(n -> n.costSoFar + heuristic(n.state, goal))
         );
         Set<WorldState> closed = new HashSet<>();
@@ -34,10 +34,10 @@ public class GoapPlannerImpl implements GoapPlanner {
             : 10000;
         int iterations = 0;
 
-        open.add(new AStarNode(currentState, null, null, 0));
+        open.add(new SearchNode(currentState, null, null, 0));
 
         while (!open.isEmpty() && iterations++ < maxIterations) {
-            AStarNode current = open.poll();
+            SearchNode current = open.poll();
             if (current == null) break;
             if (closed.contains(current.state)) continue;
             closed.add(current.state);
@@ -54,7 +54,7 @@ public class GoapPlannerImpl implements GoapPlanner {
                 WorldState nextState = applyEffects(current.state, action);
                 if (closed.contains(nextState)) continue;
                 double newCost = current.costSoFar + action.getCost();
-                open.add(new AStarNode(nextState, current, action, newCost));
+                open.add(new SearchNode(nextState, current, action, newCost));
             }
         }
 
@@ -95,9 +95,9 @@ public class GoapPlannerImpl implements GoapPlanner {
         };
     }
 
-    private Plan buildPlan(AStarNode node) {
+    private Plan buildPlan(SearchNode node) {
         List<ActionInfo> actions = new ArrayList<>();
-        AStarNode current = node;
+        SearchNode current = node;
         while (current.action != null) {
             actions.add(current.action);
             current = current.parent;

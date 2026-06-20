@@ -1,4 +1,4 @@
-package io.astra.planner.htn;
+package io.astra.planner.structural;
 
 import io.astra.api.*;
 import io.astra.api.config.AstraConfig;
@@ -8,15 +8,15 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.stream.*;
 
-public class HtnPlannerImpl implements GoapPlanner {
-    private static final Logger log = LoggerFactory.getLogger(HtnPlannerImpl.class);
+public class StructuralPlanner implements Planner {
+    private static final Logger log = LoggerFactory.getLogger(StructuralPlanner.class);
     private final AstraConfig config;
     private final Map<String, CompoundTaskDef> compoundTasks;
     private final Map<String, ActionInfo> primitives;
 
-    public HtnPlannerImpl(AstraConfig config,
-                          Map<String, CompoundTaskDef> compoundTasks,
-                          List<ActionInfo> allActions) {
+    public StructuralPlanner(AstraConfig config,
+                             Map<String, CompoundTaskDef> compoundTasks,
+                             List<ActionInfo> allActions) {
         this.config = config;
         this.compoundTasks = compoundTasks;
         this.primitives = new LinkedHashMap<>();
@@ -38,16 +38,16 @@ public class HtnPlannerImpl implements GoapPlanner {
             ? config.getOrDefault("astra.planner.maxIterations", Integer.class, 200)
             : 200;
 
-        log.debug("HTN planning: decompose '{}' from {}", rootTaskName, currentState);
+        log.debug("Structural planning: decompose '{}' from {}", rootTaskName, currentState);
         List<ActionInfo> planActions = decompose(rootTaskName, currentState, 0, maxDecomp);
 
         if (planActions == null) {
-            log.warn("HTN decomposition failed for '{}'", rootTaskName);
+            log.warn("Structural decomposition failed for '{}'", rootTaskName);
             return new DefaultPlan(List.of(), 0);
         }
 
         double totalCost = planActions.stream().mapToDouble(ActionInfo::getCost).sum();
-        log.info("HTN plan for '{}': {} primitive actions, cost={}",
+        log.info("Structural plan for '{}': {} primitive actions, cost={}",
             rootTaskName, planActions.size(), totalCost);
         return new DefaultPlan(planActions, totalCost);
     }

@@ -9,7 +9,7 @@
     </parent>
     <artifactId>astra-planners</artifactId>
     <name>Astra Planners</name>
-    <description>All planner implementations (GOAP A*, Utility AI, Hybrid, HTN)</description>
+    <description>All planner implementations (cost-based, utility-based, hybrid, structural)</description>
     <dependencies>
         <dependency>
             <groupId>io.astra</groupId>

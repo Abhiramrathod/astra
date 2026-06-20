@@ -21,7 +21,7 @@ export default function Architecture() {
         <li><code>io.astra.annotation</code> — <code>@Agent</code></li>
         <li><code>io.astra.annotation.action</code> — <code>@Action</code>, <code>@Actions</code></li>
         <li><code>io.astra.annotation.goal</code> — <code>@Goal</code>, <code>@Goals</code></li>
-        <li><code>io.astra.annotation.htn</code> — <code>@CompoundTask</code>, <code>@CompoundTasks</code>, <code>@Decomposition</code>, <code>@Decompositions</code></li>
+        <li><code>io.astra.annotation.decomposition</code> — <code>@CompoundTask</code>, <code>@CompoundTasks</code>, <code>@Decomposition</code>, <code>@Decompositions</code></li>
         <li><code>io.astra.annotation.fact</code> — <code>@Fact</code>, <code>@Facts</code></li>
       </ul>
 
@@ -31,10 +31,10 @@ export default function Architecture() {
         and client code depend on:
       </p>
       <ul>
-        <li><strong>Core:</strong> <code>Astra</code>, <code>GoapPlanner</code>, <code>Plan</code>, <code>ActionInfo</code>, <code>GoalInfo</code></li>
+        <li><strong>Core:</strong> <code>Astra</code>, <code>Planner</code>, <code>Plan</code>, <code>ActionInfo</code>, <code>GoalInfo</code></li>
         <li><strong>State:</strong> <code>WorldState</code>, <code>WorldStates</code></li>
         <li><strong>SPI:</strong> <code>PlannerType</code>, <code>PlannerProvider</code></li>
-        <li><strong>HTN:</strong> <code>CompoundTaskDef</code>, <code>DecompositionDef</code></li>
+        <li><strong>Decomposition:</strong> <code>CompoundTaskDef</code>, <code>DecompositionDef</code></li>
         <li><strong>Config:</strong> <code>AstraConfig</code>, <code>ConfigProvider</code></li>
         <li><strong>Events:</strong> <code>EventBus</code>, <code>AstraEvent</code>, <code>AstraEventType</code>, <code>AstraEventListener</code></li>
         <li><strong>Interceptors:</strong> <code>InterceptorChain</code>, <code>ActionInterceptor</code></li>
@@ -98,17 +98,18 @@ export default function Architecture() {
 
       <h3>astra-planners</h3>
       <p>
-        Contains all four planner implementations plus their SPI provider registrations:
+        Contains all planner implementations plus their SPI provider registrations.
+        Each concrete planner resides in its own sub-package:
       </p>
       <ul>
-        <li><code>io.astra.planner.goap</code> — <code>GoapPlannerImpl</code>, <code>AStarNode</code></li>
-        <li><code>io.astra.planner.utility</code> — <code>UtilityPlannerImpl</code></li>
-        <li><code>io.astra.planner.hybrid</code> — <code>HybridPlannerImpl</code></li>
-        <li><code>io.astra.planner.htn</code> — <code>HtnPlannerImpl</code></li>
-        <li><code>io.astra.planner.spi</code> — <code>GoapPlannerProvider</code>, <code>UtilityPlannerProvider</code>, <code>HybridPlannerProvider</code>, <code>HtnPlannerProvider</code></li>
-        <li><code>io.astra.planner</code> — <code>DefaultPlan</code> (shared plan implementation)</li>
+        <li>Cost-based planner implementation</li>
+        <li>Utility-based planner implementation</li>
+        <li>Hybrid planner implementation</li>
+        <li>Structural planner implementation</li>
+        <li>SPI provider registrations for <code>ServiceLoader</code> discovery</li>
+        <li><code>DefaultPlan</code> — shared plan data class</li>
       </ul>
-      <p>The SPI registration file at <code>META-INF/services/io.astra.api.PlannerProvider</code> lists all four providers for <code>ServiceLoader</code> discovery.</p>
+      <p>The SPI registration file at <code>META-INF/services/io.astra.api.PlannerProvider</code> lists all providers for <code>ServiceLoader</code> discovery.</p>
 
       <h3>astra-core</h3>
       <p>
@@ -135,13 +136,13 @@ export default function Architecture() {
         Demo applications:
       </p>
       <ul>
-        <li><code>CoffeeAgent</code> — demonstrates GOAP, Utility AI, and Hybrid planners with a coffee-making scenario. Includes a dynamic utility method (<code>getBrewUtility</code>).</li>
-        <li><code>CookingAgent</code> — demonstrates HTN planning with a dinner-making scenario. Includes compound tasks with multiple decomposition methods and conditional branching.</li>
-        <li><code>Main</code> — orchestrates all four planner demos in sequence.</li>
+        <li><code>CoffeeAgent</code> — demonstrates cost-based, utility-based, and hybrid planning with a coffee-making scenario. Includes a dynamic utility method (<code>getBrewUtility</code>).</li>
+        <li><code>CookingAgent</code> — demonstrates structural decomposition planning with a dinner-making scenario. Includes compound tasks with multiple decomposition methods and conditional branching.</li>
+        <li><code>Main</code> — orchestrates all planner demos in sequence.</li>
       </ul>
 
       <h3>astra-tests</h3>
-      <p>JUnit 5 test suite with 12 tests covering all four planners, including edge cases like no-path scenarios and precondition-based branching.</p>
+      <p>JUnit 5 test suite with 12 tests covering all planners, including edge cases like no-path scenarios and precondition-based branching.</p>
 
       <h2>Dependency Graph</h2>
       <pre><code>{`annotations

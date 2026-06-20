@@ -1,4 +1,4 @@
-package io.astra.annotation.htn;
+package io.astra.annotation.decomposition;
 
 import io.astra.annotation.fact.Fact;
 import java.lang.annotation.*;

@@ -7,7 +7,7 @@
     <version>0.1.0</version>
     <packaging>pom</packaging>
     <name>Astra Parent</name>
-    <description>GOAP-based agent framework for Java - zero LLM dependency</description>
+    <description>Multi-planner agent framework for Java - zero LLM dependency</description>
     <modules>
         <module>astra-annotations</module>
         <module>astra-api</module>

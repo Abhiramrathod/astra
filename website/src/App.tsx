@@ -6,6 +6,8 @@ import Architecture from './pages/Architecture'
 import Planners from './pages/Planners'
 import Api from './pages/Api'
 import Guides from './pages/Guides'
+import Spi from './pages/Spi'
+import Spring from './pages/Spring'
 import Samples from './pages/Samples'
 import FAQ from './pages/FAQ'
 
@@ -19,6 +21,8 @@ export default function App() {
         <Route path="/planners" element={<Planners />} />
         <Route path="/api" element={<Api />} />
         <Route path="/guides" element={<Guides />} />
+        <Route path="/spi" element={<Spi />} />
+        <Route path="/spring" element={<Spring />} />
         <Route path="/samples" element={<Samples />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="*" element={<Navigate to="/" replace />} />

@@ -3,20 +3,20 @@ export default function Planners() {
     <>
       <h1>Planners</h1>
       <p>
-        Astra ships with four built-in planners, each implementing the <code>GoapPlanner</code>
+        Astra ships with four built-in planners, each implementing the <code>Planner</code>
         interface. They are discovered at runtime via Java's <code>ServiceLoader</code> (SPI),
         registered by the <code>PlannerProvider</code> implementations in the
         <code>astra-planners</code> module.
       </p>
 
-      <h2>A* GOAP (Goal-Oriented Action Planning)</h2>
-      <p><strong>Strategy:</strong> Optimal A* search from the initial state toward the goal condition.</p>
+      <h2>Cost-Based Planner</h2>
+      <p><strong>Strategy:</strong> Optimal search from the initial state toward the goal condition, minimizing total cost.</p>
 
       <h3>How it works</h3>
       <ol>
         <li>The planner starts with the initial world state as the root node.</li>
-        <li>It expands nodes using A* search: at each step, it evaluates all applicable actions and generates successor world states.</li>
-        <li>Each node is scored as <code>f(n) = g(n) + h(n)</code> where <code>g(n)</code> is the cumulative cost and <code>h(n)</code> is the heuristic estimate of remaining cost.</li>
+        <li>It expands nodes using best-first search: at each step, it evaluates all applicable actions and generates successor world states.</li>
+        <li>Each node is scored as the sum of cumulative cost and a heuristic estimate of remaining cost.</li>
         <li>A priority queue ensures the most promising node is expanded first.</li>
         <li>When a node whose state matches the goal condition is popped, the path from root to that node is the optimal plan.</li>
       </ol>
@@ -26,19 +26,19 @@ export default function Planners() {
       <p>Configure via <code>astra.planner.heuristic</code>:</p>
       <ul>
         <li><code>unmatched</code> (default) — count of unmatched goal conditions</li>
-        <li><code>zero</code> — no heuristic (degenerates to Dijkstra's algorithm)</li>
+        <li><code>zero</code> — no heuristic</li>
       </ul>
 
       <h3>Configuration</h3>
       <pre><code>{`DefaultAstra.builder()
     .withConfig("astra.planner.maxIterations", "10000")
     .withConfig("astra.planner.heuristic", "unmatched")
-    .withPlanner(PlannerType.GOAP)`}</code></pre>
+    .withPlanner(PlannerType.COST_BASED)`}</code></pre>
 
       <table>
         <thead><tr><th>Property</th><th>Default</th><th>Description</th></tr></thead>
         <tbody>
-          <tr><td><code>astra.planner.maxIterations</code></td><td><code>10000</code></td><td>Maximum A* iterations before giving up</td></tr>
+          <tr><td><code>astra.planner.maxIterations</code></td><td><code>10000</code></td><td>Maximum search iterations before giving up</td></tr>
           <tr><td><code>astra.planner.heuristic</code></td><td><code>unmatched</code></td><td>Heuristic mode: <code>unmatched</code> or <code>zero</code></td></tr>
         </tbody>
       </table>
@@ -53,19 +53,19 @@ export default function Planners() {
         <li>Does not natively support concurrent or durative actions</li>
       </ul>
 
-      <pre><code>{`// GOAP automatically finds the cheapest path
+      <pre><code>{`// Cost-based planner automatically finds the cheapest path
 Astra astra = DefaultAstra.builder()
     .register(new DeliveryAgent())
-    .withPlanner(PlannerType.GOAP)
+    .withPlanner(PlannerType.COST_BASED)
     .build();
 
-// If two routes exist to "Delivered", GOAP picks the cheaper one
+// If two routes exist to "Delivered", the planner picks the cheaper one
 ExecutionResult r = astra.executeWithResult("Delivered",
     WorldStates.of("packageReady", "true"));`}</code></pre>
 
       <hr />
 
-      <h2>Utility AI</h2>
+      <h2>Utility-Based Planner</h2>
       <p><strong>Strategy:</strong> Greedy best-first selection based on action utility.</p>
 
       <h3>How it works</h3>
@@ -101,7 +101,7 @@ public double getBrewUtility(WorldState state) {
       <h3>Configuration</h3>
       <pre><code>{`DefaultAstra.builder()
     .withConfig("astra.planner.maxIterations", "20")
-    .withPlanner(PlannerType.UTILITY)`}</code></pre>
+    .withPlanner(PlannerType.UTILITY_BASED)`}</code></pre>
 
       <table>
         <thead><tr><th>Property</th><th>Default</th><th>Description</th></tr></thead>
@@ -122,19 +122,19 @@ public double getBrewUtility(WorldState state) {
 
       <hr />
 
-      <h2>Hybrid (Utility + GOAP)</h2>
+      <h2>Hybrid Planner</h2>
       <p><strong>Strategy:</strong> Utility-guided greedy selection that checks goal satisfaction at every step.</p>
 
       <h3>How it works</h3>
       <ol>
-        <li>Same greedy selection as Utility AI — picks the highest-utility applicable action at each step.</li>
+        <li>Same greedy selection as the utility-based planner — picks the highest-utility applicable action at each step.</li>
         <li>After each action, checks whether the goal condition is now satisfied.</li>
         <li>If the goal is met, planning stops immediately (potentially fewer steps than a full plan).</li>
         <li>Reuses utility functions including <code>utilityMethod</code> for dynamic computation.</li>
       </ol>
 
-      <h3>When to use Hybrid over Utility</h3>
-      <p>Use the Hybrid planner when actions naturally lead toward a goal but you want the speed of greedy selection. Unlike pure Utility AI, Hybrid knows when to stop (goal reached) and won't waste steps on unnecessary actions.</p>
+      <h3>When to use Hybrid over Utility-Based</h3>
+      <p>Use the Hybrid planner when actions naturally lead toward a goal but you want the speed of greedy selection. Unlike the pure utility-based planner, Hybrid knows when to stop (goal reached) and won't waste steps on unnecessary actions.</p>
 
       <h3>Configuration</h3>
       <pre><code>{`DefaultAstra.builder()
@@ -153,7 +153,7 @@ public double getBrewUtility(WorldState state) {
 
       <hr />
 
-      <h2>HTN (Hierarchical Task Network)</h2>
+      <h2>Structural Planner</h2>
       <p><strong>Strategy:</strong> Recursive decomposition of compound tasks into primitive actions.</p>
 
       <h3>How it works</h3>
@@ -195,13 +195,13 @@ public void makeMeal() {}`}</code></pre>
         </tbody>
       </table>
 
-      <h3>Building the HTN planner</h3>
+      <h3>Building the structural planner</h3>
       <pre><code>{`DefaultAstra.builder()
     .register(new CookingAgent())
-    .withPlanner(PlannerType.HTN)
+    .withPlanner(PlannerType.STRUCTURAL)
     .build();
 
-// HTN reads the goal name as the root compound task name
+// The structural planner reads the goal name as the root compound task name
 ExecutionResult r = astra.executeWithResult("MakeDinner",
     WorldStates.of("hasIngredients", "true", "hasKnife", "true"));`}</code></pre>
 
@@ -221,13 +221,13 @@ ExecutionResult r = astra.executeWithResult("MakeDinner",
       <h2>Comparison</h2>
       <table>
         <thead>
-          <tr><th>Property</th><th>A* GOAP</th><th>Utility AI</th><th>Hybrid</th><th>HTN</th></tr>
+          <tr><th>Property</th><th>Cost-Based</th><th>Utility-Based</th><th>Hybrid</th><th>Structural</th></tr>
         </thead>
         <tbody>
           <tr><td>Optimality</td><td>Optimal (lowest cost)</td><td>Greedy (local optima)</td><td>Greedy + goal-aware</td><td>First matching decomposition</td></tr>
           <tr><td>Speed</td><td>Slowest (exponential worst-case)</td><td>Fastest (linear)</td><td>Fast (linear, early exit)</td><td>Fast (polynomial in practice)</td></tr>
           <tr><td>Goal-aware</td><td>Yes</td><td>No</td><td>Yes</td><td>Yes (task-driven)</td></tr>
-          <tr><td>Planning strategy</td><td>Backward/forward A*</td><td>Forward greedy</td><td>Forward greedy</td><td>Top-down decomposition</td></tr>
+          <tr><td>Planning strategy</td><td>Best-first search</td><td>Forward greedy</td><td>Forward greedy</td><td>Top-down decomposition</td></tr>
           <tr><td>Best for</td><td>Optimal path finding</td><td>Real-time decisions</td><td>Goal-directed speed</td><td>Structured hierarchies</td></tr>
         </tbody>
       </table>

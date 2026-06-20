@@ -3,16 +3,16 @@ package io.astra.test;
 import io.astra.api.*;
 import io.astra.api.result.*;
 import io.astra.core.DefaultAstra;
-import io.astra.test.agent.HtnTestAgent;
+import io.astra.test.agent.StructuralTestAgent;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class HtnPlannerTest {
+class StructuralPlannerTest {
     @Test
     void decomposesCompoundTask() {
         Astra astra = DefaultAstra.builder()
-            .register(new HtnTestAgent())
-            .withPlanner(PlannerType.HTN)
+            .register(new StructuralTestAgent())
+            .withPlanner(PlannerType.STRUCTURAL)
             .build();
 
         Plan plan = astra.plan("MakeMeal", WorldStates.of("hasKnife", "true"));
@@ -25,8 +25,8 @@ class HtnPlannerTest {
     @Test
     void usesQuickDecompositionWhenPreconditionMet() {
         Astra astra = DefaultAstra.builder()
-            .register(new HtnTestAgent())
-            .withPlanner(PlannerType.HTN)
+            .register(new StructuralTestAgent())
+            .withPlanner(PlannerType.STRUCTURAL)
             .build();
 
         Plan plan = astra.plan("MakeMeal",
@@ -40,8 +40,8 @@ class HtnPlannerTest {
     @Test
     void achievesGoalWithFreshDecomposition() {
         Astra astra = DefaultAstra.builder()
-            .register(new HtnTestAgent())
-            .withPlanner(PlannerType.HTN)
+            .register(new StructuralTestAgent())
+            .withPlanner(PlannerType.STRUCTURAL)
             .build();
 
         ExecutionResult r = astra.executeWithResult("MakeMeal",
@@ -54,8 +54,8 @@ class HtnPlannerTest {
     @Test
     void achievesGoalWithQuickDecomposition() {
         Astra astra = DefaultAstra.builder()
-            .register(new HtnTestAgent())
-            .withPlanner(PlannerType.HTN)
+            .register(new StructuralTestAgent())
+            .withPlanner(PlannerType.STRUCTURAL)
             .build();
 
         ExecutionResult r = astra.executeWithResult("MakeMeal",
@@ -68,8 +68,8 @@ class HtnPlannerTest {
     @Test
     void returnsNonExecutablePlanWhenUnknownTask() {
         Astra astra = DefaultAstra.builder()
-            .register(new HtnTestAgent())
-            .withPlanner(PlannerType.HTN)
+            .register(new StructuralTestAgent())
+            .withPlanner(PlannerType.STRUCTURAL)
             .build();
 
         assertThrows(Exception.class,

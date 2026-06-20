@@ -4,7 +4,7 @@ import ParticleBackground from './ParticleBackground'
 import {
   HomeIcon, RocketIcon, BlocksIcon, GitBranchIcon,
   BookOpenIcon, CpuIcon, FileCodeIcon, HelpCircleIcon,
-  GithubIcon, MenuIcon, XIcon,
+  GithubIcon, MenuIcon, XIcon, PuzzleIcon, LeafIcon,
 } from './Icons'
 
 const navLinks = [
@@ -14,6 +14,8 @@ const navLinks = [
   { to: '/planners', label: 'Planners', icon: GitBranchIcon },
   { to: '/api', label: 'API', icon: BookOpenIcon },
   { to: '/guides', label: 'Guides', icon: CpuIcon },
+  { to: '/spi', label: 'SPI', icon: PuzzleIcon },
+  { to: '/spring', label: 'Spring', icon: LeafIcon },
   { to: '/samples', label: 'Samples', icon: FileCodeIcon },
   { to: '/faq', label: 'FAQ', icon: HelpCircleIcon },
 ]
@@ -28,7 +30,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 
   return (
     <>
-      <div className="watermark" />
+      <div className="watermark"><img src="/astra/favicon.svg" alt="" />
       <ParticleBackground />
 
       <header className="header">

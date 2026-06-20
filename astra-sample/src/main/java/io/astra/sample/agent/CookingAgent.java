@@ -3,8 +3,8 @@ package io.astra.sample.agent;
 import io.astra.annotation.Agent;
 import io.astra.annotation.action.Action;
 import io.astra.annotation.fact.Fact;
-import io.astra.annotation.htn.CompoundTask;
-import io.astra.annotation.htn.Decomposition;
+import io.astra.annotation.decomposition.CompoundTask;
+import io.astra.annotation.decomposition.Decomposition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

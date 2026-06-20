@@ -1,15 +1,15 @@
-package io.astra.planner.goap;
+package io.astra.planner.costbased;
 
 import io.astra.api.*;
 import java.util.*;
 
-class AStarNode {
+class SearchNode {
     final WorldState state;
-    final AStarNode parent;
+    final SearchNode parent;
     final ActionInfo action;
     final double costSoFar;
 
-    AStarNode(WorldState state, AStarNode parent, ActionInfo action, double costSoFar) {
+    SearchNode(WorldState state, SearchNode parent, ActionInfo action, double costSoFar) {
         this.state = state;
         this.parent = parent;
         this.action = action;

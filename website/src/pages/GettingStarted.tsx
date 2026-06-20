@@ -17,7 +17,7 @@ export default function GettingStarted() {
     <artifactId>astra-core</artifactId>
     <version>0.1.0</version>
 </dependency>`}</code></pre>
-      <p>This single dependency pulls in everything you need: <code>astra-api</code> (interfaces), <code>astra-planners</code> (all four planners), <code>astra-scanner</code> (annotation processing), <code>astra-utils</code>, <code>astra-config</code>, <code>astra-exceptions</code>, <code>astra-events</code>, <code>astra-interceptors</code>, and <code>astra-lifecycle</code>.</p>
+        <p>This single dependency pulls in everything you need: <code>astra-api</code> (interfaces), <code>astra-planners</code> (all planner implementations), <code>astra-scanner</code> (annotation processing), <code>astra-utils</code>, <code>astra-config</code>, <code>astra-exceptions</code>, <code>astra-events</code>, <code>astra-interceptors</code>, and <code>astra-lifecycle</code>.</p>
 
       <h3>Gradle</h3>
       <pre><code>{`implementation 'io.astra:astra-core:0.1.0'`}</code></pre>
@@ -67,8 +67,8 @@ public void grindBeans() {
           <tr><td><code>description</code></td><td>No</td><td><code>""</code></td><td>Human-readable description</td></tr>
           <tr><td><code>preconditions</code></td><td>No</td><td><code>{}</code></td><td>Facts that must be true in the world state for this action to be applicable</td></tr>
           <tr><td><code>effects</code></td><td>No</td><td><code>{}</code></td><td>Facts that become true after execution (updated in the world state)</td></tr>
-          <tr><td><code>cost</code></td><td>No</td><td><code>1.0</code></td><td>Resource cost — used by A* GOAP to find the cheapest plan</td></tr>
-          <tr><td><code>utility</code></td><td>No</td><td><code>0.5</code></td><td>Static utility value — used by Utility and Hybrid planners</td></tr>
+          <tr><td><code>cost</code></td><td>No</td><td><code>1.0</code></td><td>Resource cost — used by cost-based planners to find the cheapest plan</td></tr>
+          <tr><td><code>utility</code></td><td>No</td><td><code>0.5</code></td><td>Static utility value — used by utility-based planners</td></tr>
           <tr><td><code>utilityMethod</code></td><td>No</td><td><code>""</code></td><td>Name of a method on the agent for dynamic utility computation</td></tr>
         </tbody>
       </table>
@@ -102,7 +102,7 @@ public class Main {
     public static void main(String[] args) {
         Astra astra = DefaultAstra.builder()
             .register(new CoffeeAgent())
-            .withPlanner(PlannerType.GOAP)
+            .withPlanner(PlannerType.DEFAULT)
             .build();
 
         ExecutionResult result = astra.executeWithResult(
@@ -120,17 +120,17 @@ public class Main {
 
       <h2>Switching Planners</h2>
       <p>Change the planner with a single line in the builder:</p>
-      <pre><code>{`// A* GOAP — optimal cost-based planning (default)
-.withPlanner(PlannerType.GOAP)
+      <pre><code>{`// Cost-based planner — optimal cost-based planning (default)
+.withPlanner(PlannerType.COST_BASED)
 
-// Utility AI — fast greedy utility-based selection
-.withPlanner(PlannerType.UTILITY)
+// Utility-based planner — fast greedy utility-based selection
+.withPlanner(PlannerType.UTILITY_BASED)
 
-// Hybrid — utility selection with goal-awareness
+// Hybrid planner — utility selection with goal-awareness
 .withPlanner(PlannerType.HYBRID)
 
-// HTN — hierarchical task decomposition
-.withPlanner(PlannerType.HTN)`}</code></pre>
+// Structural planner — hierarchical task decomposition
+.withPlanner(PlannerType.STRUCTURAL)`}</code></pre>
 
       <h2>Building from Source</h2>
       <pre><code>{`# Clone the repository

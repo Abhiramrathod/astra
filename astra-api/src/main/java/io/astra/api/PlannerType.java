@@ -1,5 +1,5 @@
 package io.astra.api;
 
 public enum PlannerType {
-    GOAP, UTILITY, HYBRID, HTN
+    COST_BASED, UTILITY_BASED, HYBRID, STRUCTURAL
 }

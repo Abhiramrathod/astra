@@ -2,12 +2,12 @@ package io.astra.test.agent;
 
 import io.astra.annotation.Agent;
 import io.astra.annotation.action.Action;
-import io.astra.annotation.htn.CompoundTask;
-import io.astra.annotation.htn.Decomposition;
+import io.astra.annotation.decomposition.CompoundTask;
+import io.astra.annotation.decomposition.Decomposition;
 import io.astra.annotation.fact.Fact;
 
 @Agent
-public class HtnTestAgent {
+public class StructuralTestAgent {
     @Action(name = "Chop", cost = 2,
         preconditions = @Fact(name = "hasKnife", value = "true"),
         effects = @Fact(name = "chopped", value = "true"))

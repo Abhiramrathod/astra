@@ -14,10 +14,10 @@ export default function Home() {
           <span className="tag">Java 17+</span>
           <span className="tag">Maven</span>
           <span className="tag">Apache 2.0</span>
-          <span className="tag">A* GOAP</span>
-          <span className="tag">Utility AI</span>
-          <span className="tag">Hybrid</span>
-          <span className="tag">HTN</span>
+          <span className="tag">Multi-Planner</span>
+          <span className="tag">Annotation DSL</span>
+          <span className="tag">Deterministic</span>
+          <span className="tag">SPI Plugins</span>
         </div>
         <div className="links">
           <a href="https://github.com/Abhiramrathod/astra" target="_blank" rel="noopener">
@@ -45,8 +45,8 @@ export default function Home() {
       <p>
         Astra is a production-grade, pure-Java agent framework for building autonomous
         decision-making systems. Unlike frameworks that depend on large language models,
-        Astra uses <strong>classical AI planning</strong> — A* Goal-Oriented Action Planning,
-        Utility AI, Hybrid, and Hierarchical Task Networks — making it deterministic, fast,
+        Astra uses <strong>classical AI planning</strong> — multiple planning strategies
+        including cost-based, utility-based, structural, and hybrid approaches — making it deterministic, fast,
         and suitable for real-time applications like games, robotics, simulation, and automation.
       </p>
       <p>
@@ -66,8 +66,8 @@ export default function Home() {
           <div className="icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
           </div>
-          <h3>Four Planners</h3>
-          <p>A* GOAP, Utility AI, Hybrid, and HTN — all in one framework. Pick the right planner for your use case.</p>
+          <h3>Multiple Planners</h3>
+          <p>Cost-based, utility-based, structural, and hybrid — all in one framework. Pick the right planner for your use case.</p>
         </div>
         <div className="feature-card">
           <div className="icon">
@@ -216,7 +216,7 @@ public class Main {
     public static void main(String[] args) {
         Astra astra = DefaultAstra.builder()
             .register(new CoffeeAgent())
-            .withPlanner(PlannerType.GOAP)
+            .withPlanner(PlannerType.DEFAULT)
             .build();
 
         ExecutionResult result = astra.executeWithResult(
@@ -246,7 +246,7 @@ Success: true, Steps: 3`}</code></pre>
         <thead><tr><th>Module</th><th>Description</th></tr></thead>
         <tbody>
           <tr><td><code>astra-annotations</code></td><td>Annotation definitions: @Agent, @Action, @Goal, @Fact, @CompoundTask, @Decomposition</td></tr>
-          <tr><td><code>astra-api</code></td><td>Core interfaces: Astra, GoapPlanner, ActionInfo, WorldState, EventBus, PlannerProvider, PlannerType</td></tr>
+          <tr><td><code>astra-api</code></td><td>Core interfaces: Astra, Planner, ActionInfo, WorldState, EventBus, PlannerProvider, PlannerType</td></tr>
           <tr><td><code>astra-utils</code></td><td>ClassPathScanner, WorldStateSerializer (Jackson)</td></tr>
           <tr><td><code>astra-scanner</code></td><td>Reflects annotations into API type instances at registration time</td></tr>
           <tr><td><code>astra-config</code></td><td>Map-based and properties-file configuration providers</td></tr>
@@ -254,10 +254,10 @@ Success: true, Steps: 3`}</code></pre>
           <tr><td><code>astra-events</code></td><td>DefaultEventBus — thread-safe publish-subscribe event bus</td></tr>
           <tr><td><code>astra-interceptors</code></td><td>DefaultInterceptorChain — before/after/error action hooks</td></tr>
           <tr><td><code>astra-lifecycle</code></td><td>LifecycleManager — agent initialization and shutdown</td></tr>
-          <tr><td><code>astra-planners</code></td><td>All four planner implementations (GOAP, Utility, Hybrid, HTN) + SPI providers</td></tr>
+          <tr><td><code>astra-planners</code></td><td>All planner implementations + SPI providers for extensibility</td></tr>
           <tr><td><code>astra-core</code></td><td>DefaultAstra — the main builder, runtime, and wiring</td></tr>
           <tr><td><code>astra-spring</code></td><td>Spring Boot auto-configuration with @EnableAstra</td></tr>
-          <tr><td><code>astra-sample</code></td><td>Demo agents: CoffeeAgent (GOAP/Utility/Hybrid) and CookingAgent (HTN)</td></tr>
+          <tr><td><code>astra-sample</code></td><td>Demo agents — CoffeeAgent and CookingAgent showcasing various planning strategies</td></tr>
           <tr><td><code>astra-tests</code></td><td>JUnit 5 test suite — 12 tests covering all planners</td></tr>
         </tbody>
       </table>

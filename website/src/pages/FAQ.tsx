@@ -5,8 +5,8 @@ export default function FAQ() {
 
       <h3>What makes Astra different from other agent frameworks?</h3>
       <p>
-        Astra uses <strong>classical AI planning</strong> (A*, Utility, HTN) rather than
-        large language models. This makes it deterministic, fast, auditable, and
+        Astra uses <strong>classical AI planning</strong> (cost-based, utility-based,
+        structural approaches) rather than large language models. This makes it deterministic, fast, auditable, and
         significantly cheaper to run. It's designed for real-time systems like games,
         robotics, and automation where decisions must be made in milliseconds.
       </p>
@@ -22,10 +22,10 @@ export default function FAQ() {
         It depends on your use case:
       </p>
       <ul>
-        <li><strong>A* GOAP</strong> — you need the <em>optimal</em> (cheapest) plan and can wait for the search to complete</li>
-        <li><strong>Utility AI</strong> — you need <em>fast</em> decisions and can accept near-optimal results</li>
+        <li><strong>Cost-based</strong> — you need the <em>optimal</em> (cheapest) plan and can wait for the search to complete</li>
+        <li><strong>Utility-based</strong> — you need <em>fast</em> decisions and can accept near-optimal results</li>
         <li><strong>Hybrid</strong> — you want fast decisions <em>and</em> goal-awareness</li>
-        <li><strong>HTN</strong> — your domain has a <em>natural task hierarchy</em> with known decomposition patterns</li>
+        <li><strong>Structural</strong> — your domain has a <em>natural task hierarchy</em> with known decomposition patterns</li>
       </ul>
 
       <h3>Can I use multiple planners in one application?</h3>
@@ -33,19 +33,19 @@ export default function FAQ() {
         Yes. Create separate <code>Astra</code> instances for different planning needs.
         Each instance has its own planner and action set.
       </p>
-      <pre><code>{`Astra goapAstra = DefaultAstra.builder()
+      <pre><code>{`Astra costAstra = DefaultAstra.builder()
     .register(new CombatAgent())
-    .withPlanner(PlannerType.GOAP)
+    .withPlanner(PlannerType.COST_BASED)
     .build();
 
-Astra htnAstra = DefaultAstra.builder()
+Astra structAstra = DefaultAstra.builder()
     .register(new CraftingAgent())
-    .withPlanner(PlannerType.HTN)
+    .withPlanner(PlannerType.STRUCTURAL)
     .build();`}</code></pre>
 
       <h3>How do I add a custom planner?</h3>
       <p>
-        Implement <code>GoapPlanner</code> and <code>PlannerProvider</code>, register the
+        Implement <code>Planner</code> and <code>PlannerProvider</code>, register the
         provider via <code>META-INF/services/io.astra.api.PlannerProvider</code>, and
         put your jar on the classpath. See the <a href="#/guides">Guides → Custom Planners</a>
         section for a step-by-step walkthrough.
@@ -108,7 +108,7 @@ Astra htnAstra = DefaultAstra.builder()
 
       <h3>Is Astra production-ready?</h3>
       <p>
-        Astra is in active development (v0.1.0). The core architecture and all four planners
+        Astra is in active development (v0.1.0). The core architecture and all planners
         are functional and tested. APIs may evolve as the framework matures.
       </p>
 
