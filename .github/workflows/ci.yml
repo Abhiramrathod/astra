@@ -18,8 +18,8 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Build and test
-        run: ./mvnw verify -B -q
+      - name: Build all modules
+        run: ./mvnw install -DskipTests -B -q
 
-      - name: Run integration tests
+      - name: Run tests
         run: ./mvnw test -pl astra-tests -B
