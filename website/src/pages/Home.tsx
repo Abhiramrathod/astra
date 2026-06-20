@@ -3,32 +3,42 @@ export default function Home() {
     <>
       <div className="hero">
         <h1>Astra</h1>
-        <p>Multi-Planner Agent Framework for Java — zero LLM dependency</p>
-        <p>
+        <p className="subtitle">
+          Multi-Planner Agent Framework for Java — classical AI planning with zero LLM dependency.
+          Deterministic, fast, and auditable decision-making for real-time systems.
+        </p>
+        <div className="tags">
           <span className="tag">Java 17+</span>
           <span className="tag">Maven</span>
           <span className="tag">Apache 2.0</span>
           <span className="tag">A* GOAP</span>
           <span className="tag">Utility AI</span>
+          <span className="tag">Hybrid</span>
           <span className="tag">HTN</span>
-        </p>
-        <p style={{ fontSize: '1rem', marginTop: '1.5rem' }}>
-          <a href="https://github.com/Abhiramrathod/astra" target="_blank">GitHub</a>
-          {' · '}
-          <a href="https://github.com/Abhiramrathod/astra/releases" target="_blank">Releases</a>
-          {' · '}
-          <a href="https://github.com/Abhiramrathod/astra/issues" target="_blank">Issues</a>
-        </p>
+        </div>
+        <div className="links">
+          <a href="https://github.com/Abhiramrathod/astra" target="_blank" rel="noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+            GitHub
+          </a>
+          <a href="#/getting-started">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
+            Get Started
+          </a>
+          <a href="#/api">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            API Reference
+          </a>
+        </div>
       </div>
 
       <h2>What is Astra?</h2>
       <p>
-        Astra is a production-grade, pure-Java agent framework designed for building autonomous
-        decision-making systems. Unlike agent frameworks that depend on large language models (LLMs),
-        Astra uses classical AI planning techniques — <strong>A* Goal-Oriented Action Planning</strong>,
-        <strong>Utility AI</strong>, <strong>Hybrid</strong>, and <strong>Hierarchical Task Networks</strong> —
-        making it deterministic, fast, and suitable for real-time applications like games, robotics,
-        simulation, and automation.
+        Astra is a production-grade, pure-Java agent framework for building autonomous
+        decision-making systems. Unlike frameworks that depend on large language models,
+        Astra uses <strong>classical AI planning</strong> — A* Goal-Oriented Action Planning,
+        Utility AI, Hybrid, and Hierarchical Task Networks — making it deterministic, fast,
+        and suitable for real-time applications like games, robotics, simulation, and automation.
       </p>
       <p>
         Agents are defined declaratively using Java annotations. The framework handles planning,
@@ -38,52 +48,88 @@ export default function Home() {
       <h2>Features</h2>
       <div className="features">
         <div className="feature-card">
+          <div className="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
           <h3>Four Planners</h3>
-          <p>A* GOAP for optimal paths, Utility AI for fast greedy decisions, Hybrid for balanced trade-offs, and HTN for structured task hierarchies — all in one framework.</p>
+          <p>A* GOAP, Utility AI, Hybrid, and HTN — all in one framework. Pick the right planner for your use case.</p>
         </div>
         <div className="feature-card">
+          <div className="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg>
+          </div>
           <h3>Annotation DSL</h3>
-          <p>Define agents, actions, goals, facts, compound tasks, and decompositions entirely with Java annotations. No XML, no YAML, no external configuration files.</p>
+          <p>Define agents, actions, goals, and tasks entirely with Java annotations. No XML, no YAML, no config files.</p>
         </div>
         <div className="feature-card">
+          <div className="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
           <h3>Dynamic Utility</h3>
-          <p>State-aware utility functions via <code>utilityMethod</code>. Actions can compute their own utility based on the current world state at planning time.</p>
+          <p>State-aware utility via <code>utilityMethod</code>. Actions compute their own utility from the world state at planning time.</p>
         </div>
         <div className="feature-card">
+          <div className="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+          </div>
           <h3>SPI Plugin System</h3>
-          <p>Third-party planners discovered at runtime via Java <code>ServiceLoader</code>. Implement <code>PlannerProvider</code>, drop your jar on the classpath, and it works.</p>
+          <p>Third-party planners discovered at runtime via <code>ServiceLoader</code>. Drop your jar and it works.</p>
         </div>
         <div className="feature-card">
+          <div className="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/><path d="M8 11h8"/><path d="M8 7h6"/></svg>
+          </div>
           <h3>Event Bus</h3>
-          <p>Publish-subscribe lifecycle and planning events. Track every stage: agent registration, plan start/complete/fail, action before/after/fail, goal satisfied/unsatisfiable.</p>
+          <p>Publish-subscribe lifecycle and planning events. Track every stage from agent registration to goal satisfaction.</p>
         </div>
         <div className="feature-card">
+          <div className="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></svg>
+          </div>
           <h3>Interceptor Chain</h3>
-          <p>Hook into action execution with <code>beforeAction</code>, <code>afterAction</code>, and <code>onError</code> callbacks. Ideal for logging, metrics, validation, and auditing.</p>
+          <p>Hook into action execution with before/after/error callbacks for logging, metrics, validation, and auditing.</p>
         </div>
         <div className="feature-card">
+          <div className="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 20h12"/><path d="M6 4h12"/><path d="M6 12h12"/><path d="M6 8h12"/><path d="M6 16h12"/></svg>
+          </div>
           <h3>Lifecycle Management</h3>
-          <p>Agents implement <code>LifecycleAware</code> to receive <code>onInit</code> and <code>onDestroy</code> callbacks. The framework manages initialization and cleanup automatically.</p>
+          <p>Agents receive <code>onInit</code> and <code>onDestroy</code> callbacks. Framework handles initialization and cleanup.</p>
         </div>
         <div className="feature-card">
+          <div className="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
           <h3>Spring Boot</h3>
-          <p>First-class Spring Boot support via <code>@EnableAstra</code>. Auto-configures the <code>Astra</code> instance and makes it available as a Spring bean.</p>
+          <p>First-class Spring Boot support via <code>@EnableAstra</code>. Auto-configures Astra as a Spring bean.</p>
         </div>
         <div className="feature-card">
+          <div className="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+          </div>
           <h3>JSON Serialization</h3>
-          <p><code>WorldStateSerializer</code> converts world states to and from JSON using Jackson. Useful for persistence, networking, and debugging.</p>
+          <p>World states to/from JSON via Jackson for persistence, networking, and debugging.</p>
         </div>
         <div className="feature-card">
+          <div className="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+          </div>
           <h3>Typed Exceptions</h3>
-          <p>Hierarchical exception types for every failure mode: <code>GoalNotFoundException</code>, <code>PlanNotFoundException</code>, <code>ActionExecutionException</code>, <code>DuplicateGoalException</code>, and more.</p>
+          <p>Exception hierarchy for every failure mode: goal not found, plan not found, action execution error, and more.</p>
         </div>
         <div className="feature-card">
+          <div className="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
           <h3>Async Execution</h3>
-          <p><code>CompletableFuture</code>-based asynchronous execution via <code>executeAsync()</code>. Run planning and action execution on a separate thread without blocking.</p>
+          <p><code>CompletableFuture</code>-based async via <code>executeAsync()</code>. Run planning and execution on a separate thread.</p>
         </div>
         <div className="feature-card">
+          <div className="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg>
+          </div>
           <h3>Zero LLM Deps</h3>
-          <p>No OpenAI, no Anthropic, no HuggingFace. Astra is pure classical AI — deterministic, predictable, auditable, and infinitely cheaper to run.</p>
+          <p>No OpenAI, no Anthropic, no HuggingFace. Pure classical AI — deterministic, predictable, and infinitely cheaper.</p>
         </div>
       </div>
 
@@ -190,7 +236,7 @@ Success: true, Steps: 3`}</code></pre>
       </table>
 
       <h2>License</h2>
-      <p>Astra is open source under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License 2.0</a>.</p>
+      <p>Astra is open source under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" rel="noopener">Apache License 2.0</a>.</p>
     </>
   )
 }
