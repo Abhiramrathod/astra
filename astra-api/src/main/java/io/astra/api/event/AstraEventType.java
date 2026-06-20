@@ -1,0 +1,14 @@
+package io.astra.api.event;
+
+public enum AstraEventType {
+    PLAN_STARTED,
+    PLAN_COMPLETED,
+    PLAN_FAILED,
+    ACTION_BEFORE,
+    ACTION_AFTER,
+    ACTION_FAILED,
+    GOAL_SATISFIED,
+    GOAL_UNSATISFIABLE,
+    AGENT_REGISTERED,
+    AGENT_REMOVED
+}

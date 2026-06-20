@@ -1,0 +1,4 @@
+io.astra.planner.spi.GoapPlannerProvider
+io.astra.planner.spi.UtilityPlannerProvider
+io.astra.planner.spi.HybridPlannerProvider
+io.astra.planner.spi.HtnPlannerProvider

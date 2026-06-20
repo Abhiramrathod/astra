@@ -1,0 +1,12 @@
+package io.astra.api;
+
+import io.astra.api.config.AstraConfig;
+import java.util.List;
+import java.util.Map;
+
+public interface PlannerProvider {
+    PlannerType type();
+    GoapPlanner create(AstraConfig config,
+                       Map<String, CompoundTaskDef> compoundTasks,
+                       List<ActionInfo> actions);
+}

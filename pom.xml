@@ -1,0 +1,32 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>io.astra</groupId>
+    <artifactId>astra-parent</artifactId>
+    <version>0.1.0</version>
+    <packaging>pom</packaging>
+    <name>Astra Parent</name>
+    <description>GOAP-based agent framework for Java - zero LLM dependency</description>
+    <modules>
+        <module>astra-annotations</module>
+        <module>astra-api</module>
+        <module>astra-utils</module>
+        <module>astra-scanner</module>
+        <module>astra-config</module>
+        <module>astra-exceptions</module>
+        <module>astra-events</module>
+        <module>astra-interceptors</module>
+        <module>astra-lifecycle</module>
+        <module>astra-planners</module>
+        <module>astra-core</module>
+        <module>astra-spring</module>
+        <module>astra-sample</module>
+        <module>astra-tests</module>
+    </modules>
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+</project>
