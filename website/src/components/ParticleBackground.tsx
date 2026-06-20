@@ -16,19 +16,22 @@ export default function ParticleBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
+    const cvs = canvasRef.current
+    if (!cvs) return
 
-    const ctx = canvas.getContext('2d')
+    const ctx = cvs.getContext('2d')
     if (!ctx) return
+
+    const $cvs: HTMLCanvasElement = cvs
+    const $ctx: CanvasRenderingContext2D = ctx
 
     let animId: number
     let particles: Particle[] = []
     let lastTime = 0
 
     const resize = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
+      $cvs.width = window.innerWidth
+      $cvs.height = window.innerHeight
     }
 
     resize()
@@ -45,8 +48,8 @@ export default function ParticleBackground() {
       const maxLife = 3000 + Math.random() * 3000
       const color = colors[Math.floor(Math.random() * colors.length)]
       particles.push({
-        x: Math.random() * (canvas?.width ?? window.innerWidth),
-        y: (canvas?.height ?? window.innerHeight) + 10,
+        x: Math.random() * $cvs.width,
+        y: $cvs.height + 10,
         vx: (Math.random() - 0.5) * 0.3,
         vy: -(0.2 + Math.random() * 0.4),
         size: 1 + Math.random() * 2.5,
@@ -58,8 +61,8 @@ export default function ParticleBackground() {
     }
 
     function spawnBurst() {
-      const cx = Math.random() * (canvas?.width ?? window.innerWidth)
-      const cy = (canvas?.height ?? window.innerHeight) * (0.6 + Math.random() * 0.4)
+      const cx = Math.random() * $cvs.width
+      const cy = $cvs.height * (0.6 + Math.random() * 0.4)
       for (let i = 0; i < 6; i++) {
         const maxLife = 1500 + Math.random() * 2000
         const angle = Math.random() * Math.PI * 2
@@ -85,7 +88,7 @@ export default function ParticleBackground() {
       const dt = Math.min(time - lastTime, 50)
       lastTime = time
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      $ctx.clearRect(0, 0, $cvs.width, $cvs.height)
 
       if (particles.length < 80 && Math.random() < 0.3) {
         spawnParticle()
@@ -107,17 +110,17 @@ export default function ParticleBackground() {
         p.alpha *= 0.998
         p.vy -= 0.0003 * (dt / 16)
 
-        ctx.beginPath()
-        ctx.arc(p.x, p.y, p.size * (1 - progress * 0.3), 0, Math.PI * 2)
+        $ctx.beginPath()
+        $ctx.arc(p.x, p.y, p.size * (1 - progress * 0.3), 0, Math.PI * 2)
         const colorStr = p.color.replace('{a}', String(p.alpha * (1 - progress * 0.6)))
-        ctx.fillStyle = colorStr
-        ctx.fill()
+        $ctx.fillStyle = colorStr
+        $ctx.fill()
 
         if (p.size > 1.5) {
-          ctx.beginPath()
-          ctx.arc(p.x - p.vx * 1.5, p.y - p.vy * 1.5, p.size * 0.4, 0, Math.PI * 2)
-          ctx.fillStyle = colorStr.replace(/[\d.]+(?=\))/, String(p.alpha * 0.3 * (1 - progress * 0.6)))
-          ctx.fill()
+          $ctx.beginPath()
+          $ctx.arc(p.x - p.vx * 1.5, p.y - p.vy * 1.5, p.size * 0.4, 0, Math.PI * 2)
+          $ctx.fillStyle = colorStr.replace(/[\d.]+(?=\))/, String(p.alpha * 0.3 * (1 - progress * 0.6)))
+          $ctx.fill()
         }
 
         return true
