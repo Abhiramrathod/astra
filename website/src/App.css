@@ -180,8 +180,13 @@ strong { color: var(--text); font-weight: 600; }
 /* ---- Header ---- */
 
 .header {
-  background: transparent;
+  position: relative;
+  z-index: 3;
+  background: rgba(7, 7, 13, 0.35);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   height: var(--header-h);
+  border-bottom: 1px solid rgba(30, 26, 48, 0.4);
 }
 
 .header-inner {
@@ -419,6 +424,17 @@ strong { color: var(--text); font-weight: 600; }
   min-height: calc(100vh - var(--header-h));
   position: relative;
   z-index: 1;
+}
+
+.watermark {
+  position: fixed;
+  inset: 0;
+  background-image: url('/astra/watermark.svg');
+  background-size: 90px 90px;
+  background-repeat: repeat;
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .page {

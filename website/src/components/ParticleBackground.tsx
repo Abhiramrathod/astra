@@ -144,7 +144,7 @@ export default function ParticleBackground() {
         position: 'fixed',
         inset: 0,
         pointerEvents: 'none',
-        zIndex: 0,
+        zIndex: 2,
         opacity: 0.6,
       }}
     />

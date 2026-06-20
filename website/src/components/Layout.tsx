@@ -28,6 +28,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 
   return (
     <>
+      <div className="watermark" />
       <ParticleBackground />
 
       <header className="header">
