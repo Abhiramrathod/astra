@@ -75,7 +75,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         <div className="page">
           {children}
           <footer className="footer">
-            <span>&copy; {new Date().getFullYear()} Astra — Apache 2.0 License</span>
+            <span>{'\u00a9'} {new Date().getFullYear()} Astra — Apache 2.0 License</span>
             <div className="footer-links">
               <a href="https://github.com/Abhiramrathod/astra" target="_blank" rel="noopener">GitHub</a>
               <a href="https://github.com/Abhiramrathod/astra/releases" target="_blank" rel="noopener">Releases</a>
