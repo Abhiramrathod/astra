@@ -31,6 +31,96 @@ export default function GettingStarted() {
         </tbody>
       </table>
 
+      <h2>Core Concepts</h2>
+
+      <p>Astra models planning as a state-transition problem. An <strong>agent</strong> operates in a <strong>world state</strong> and tries to reach a <strong>goal</strong> by executing <strong>actions</strong>. Each action declares what it needs (preconditions) and what it changes (effects). A <strong>planner</strong> searches for the cheapest or best sequence of actions to get from the current state to a state that satisfies the goal.</p>
+
+      <h3>Fact</h3>
+      <p>A <code>@Fact</code> is the smallest unit of state — a key-value pair. Facts are used everywhere: as preconditions ("this action requires <code>hasBeans=true</code>"), as effects ("after grinding, <code>beansGround=true</code>"), and as goal conditions ("goal achieved when <code>coffeeServed=true</code>").</p>
+      <pre><code>{`@Fact(name = "hasBeans", value = "true")`}</code></pre>
+      <p>Multiple facts are composed using the array syntax:</p>
+      <pre><code>{`preconditions = {
+    @Fact(name = "hasBeans", value = "true"),
+    @Fact(name = "waterBoiled", value = "true")
+}`}</code></pre>
+
+      <h3>WorldState</h3>
+      <p>The <code>WorldState</code> is an immutable snapshot of all currently known facts. It is passed through the planning pipeline — the planner checks preconditions against it, and actions update it with their effects. Create initial states with the <code>WorldStates</code> factory:</p>
+      <pre><code>{`WorldState state = WorldStates.of(
+    "hasBeans", "true",
+    "waterBoiled", "false"
+);
+state.get("hasBeans");          // Optional["true"]
+state.matches(conditions);      // boolean — are all conditions satisfied?
+state.set("waterBoiled", "true"); // returns a NEW state (immutable)`}</code></pre>
+
+      <h3>Action</h3>
+      <p>An <code>@Action</code> is a capability — something the agent can do. Every action declares:</p>
+      <table>
+        <thead><tr><th>Property</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td><code>preconditions</code></td><td>Facts that <strong>must be true</strong> in the current state before this action can be selected by the planner</td></tr>
+          <tr><td><code>effects</code></td><td>Facts that <strong>become true</strong> in the state after the action runs</td></tr>
+          <tr><td><code>cost</code></td><td>Weight used by cost-based planners to find the optimal (cheapest) plan — higher cost = less preferred</td></tr>
+          <tr><td><code>utility</code></td><td>Static desirability score used by utility-based planners — higher utility = more likely to be chosen</td></tr>
+          <tr><td><code>utilityMethod</code></td><td>Name of a method that computes utility dynamically from the current <code>WorldState</code>, overriding the static <code>utility</code> value</td></tr>
+        </tbody>
+      </table>
+      <p>The planner chains actions by matching effects of one action to preconditions of the next. For example, if action A has effect <code>beansGround=true</code> and action B has precondition <code>beansGround=true</code>, then A must come before B.</p>
+
+      <h3>Goal</h3>
+      <p>A <code>@Goal</code> defines what success looks like — a condition on the world state that, when satisfied, means the agent has accomplished its objective. The planner works backward from this condition to find a sequence of actions that achieves it.</p>
+      <pre><code>{`@Goal(
+    name = "MakeCoffee",
+    condition = @Fact(name = "coffeeServed", value = "true")
+)
+public void coffeeGoal() {}`}</code></pre>
+      <p>A method annotated with <code>@Goal</code> is a marker only — the method body is never executed. Its <code>condition</code> is what matters to the planner.</p>
+
+      <h3>Plan</h3>
+      <p>A <code>Plan</code> is the output of planning: an ordered list of actions that, executed in sequence, transforms the initial state into a goal-satisfying state. Plans have a <code>totalCost</code> (sum of action costs) so you can compare different strategies.</p>
+
+      <h3>Compound Task &amp; Decomposition (Structural Planner only)</h3>
+      <p>A <code>@CompoundTask</code> is a high-level task that can be broken down in multiple ways via <code>@Decomposition</code> annotations. Each decomposition defines <code>subtasks</code> (referring to other actions or compound tasks by name) and optional <code>preconditions</code> to choose the right decomposition at planning time. Decompositions are tried in source-code order; if one fails due to unmet preconditions, the next is attempted (backtracking).</p>
+      <pre><code>{`@CompoundTask(name = "MakeCoffee")
+@Decomposition(
+    name = "espresso",
+    preconditions = @Fact(name = "hasEspressoMachine", value = "true"),
+    subtasks = {"GrindBeans", "BrewEspresso", "Serve"}
+)
+@Decomposition(
+    name = "drip",
+    subtasks = {"BoilWater", "AddGrounds", "BrewDrip", "Serve"}
+)
+public void makeCoffee() {}`}</code></pre>
+
+      <h3>Planner</h3>
+      <p>A <code>Planner</code> is the algorithm that searches for a plan. Astra ships with four:</p>
+      <table>
+        <thead><tr><th>Planner</th><th>Strategy</th><th>Best for</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Cost-based</strong> (<code>COST_BASED</code>)</td><td>A*-informed search; finds the cheapest plan by summing action costs</td><td>Most applications — optimal plans, explicit cost model</td></tr>
+          <tr><td><strong>Utility-based</strong> (<code>UTILITY_BASED</code>)</td><td>Greedy forward chaining; picks the highest-utility applicable action at each step</td><td>Real-time / reactive agents where speed matters more than optimality</td></tr>
+          <tr><td><strong>Hybrid</strong> (<code>HYBRID</code>)</td><td>Utility selection with goal-awareness and backtracking</td><td>Scenarios that need both responsiveness and goal-directed behavior</td></tr>
+          <tr><td><strong>Structural</strong> (<code>STRUCTURAL</code>)</td><td>Recursive task decomposition; breaks compound tasks into subtasks</td><td>Hierarchical domains with well-defined procedures (recipes, workflows)</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Planning flow summary</h3>
+      <pre><code>{`Initial state            Planner                   Plan
+{hasBeans: true}    ──>  searches actions   ──>  [GrindBeans, Brew, Serve]
+                      with preconditions/         (ordered sequence
+                       effects matching            that achieves goal)
+                       forward/backward
+
+Goal condition: coffeeServed = true`}</code></pre>
+
+      <p>At execution time, the plan actions run in order. Each action reads the current world state, executes its method body, and writes its effects back to the state. The event bus and interceptors fire at each phase for observability.</p>
+
+      <h3>Event Bus &amp; Interceptors (cross-cutting)</h3>
+      <p>The <strong>event bus</strong> publishes lifecycle events (<code>PLAN_STARTED</code>, <code>ACTION_BEFORE</code>, <code>ACTION_FAILED</code>, <code>GOAL_SATISFIED</code>, etc.) that listeners can subscribe to for logging, metrics, or debugging.</p>
+      <p><strong>Interceptors</strong> hook into action execution (<code>beforeAction</code>, <code>afterAction</code>, <code>onError</code>) to add cross-cutting concerns like validation, authentication, or performance tracking — without modifying the agent code.</p>
+
       <h2>Writing Your First Agent</h2>
       <p>An agent is a plain Java class annotated with <code>@Agent</code>. The class defines <strong>actions</strong> (what the agent can do), <strong>goals</strong> (what the agent wants to achieve), and optionally <strong>compound tasks</strong> (hierarchical task networks).</p>
 
