@@ -9,7 +9,9 @@ export default function Samples() {
 
       <h2>CoffeeAgent</h2>
       <p>
-        <strong>File:</strong> <code>astra-sample/src/main/java/io/astra/sample/agent/CoffeeAgent.java</code>
+        <a href="https://github.com/Abhiramrathod/astra/blob/main/astra-sample/src/main/java/io/astra/sample/agent/CoffeeAgent.java" target="_blank" rel="noopener" className="source-link">
+          View source on GitHub &rarr;
+        </a>
       </p>
       <p>
         A coffee-making agent demonstrating cost-based, utility-based, and hybrid planning.
@@ -64,7 +66,9 @@ export default function Samples() {
 
       <h2>CookingAgent</h2>
       <p>
-        <strong>File:</strong> <code>astra-sample/src/main/java/io/astra/sample/agent/CookingAgent.java</code>
+        <a href="https://github.com/Abhiramrathod/astra/blob/main/astra-sample/src/main/java/io/astra/sample/agent/CookingAgent.java" target="_blank" rel="noopener" className="source-link">
+          View source on GitHub &rarr;
+        </a>
       </p>
       <p>
         A dinner-making agent demonstrating structural decomposition with compound tasks and
@@ -123,6 +127,53 @@ astra.executeWithResult("MakeDinner",
     WorldStates.of("hasIngredients", "true",
                    "hasKnife", "true", "hasPot", "true",
                    "preCooked", "true"));`}</code></pre>
+
+      <hr />
+
+      <h2>Runner</h2>
+      <p>
+        <a href="https://github.com/Abhiramrathod/astra/blob/main/astra-sample/src/main/java/io/astra/sample/Main.java" target="_blank" rel="noopener" className="source-link">
+          View Main.java on GitHub &rarr;
+        </a>
+      </p>
+      <p>
+        The <code>Main.java</code> entry point runs all four planner demos in sequence.
+        Build and execute with:
+      </p>
+      <pre><code>{`./mvnw exec:java -pl astra-sample \\
+    -Dexec.mainClass="io.astra.sample.Main"`}</code></pre>
+
+      <hr />
+
+      <h2>SPI Examples</h2>
+      <p>
+        <a href="https://github.com/Abhiramrathod/astra/blob/main/astra-sample/src/main/java/io/astra/sample/spi/MyCustomPlanner.java" target="_blank" rel="noopener" className="source-link">
+          MyCustomPlanner.java &rarr;
+        </a>
+        &nbsp;&middot;&nbsp;
+        <a href="https://github.com/Abhiramrathod/astra/blob/main/astra-sample/src/main/java/io/astra/sample/spi/MyPlannerProvider.java" target="_blank" rel="noopener" className="source-link">
+          MyPlannerProvider.java &rarr;
+        </a>
+        &nbsp;&middot;&nbsp;
+        <a href="https://github.com/Abhiramrathod/astra/blob/main/astra-sample/src/main/java/io/astra/sample/spi/RandomPlanner.java" target="_blank" rel="noopener" className="source-link">
+          RandomPlanner.java &rarr;
+        </a>
+      </p>
+      <p>Custom planner implementations demonstrating the SPI plugin system. See the <a href="#/spi">SPI guide</a> for details.</p>
+
+      <h2>Spring Boot Example</h2>
+      <p>
+        <a href="https://github.com/Abhiramrathod/astra/blob/main/astra-sample/src/main/java/io/astra/sample/spring/OrderApp.java" target="_blank" rel="noopener" className="source-link">
+          OrderApp.java &rarr;
+        </a>
+        &nbsp;&middot;&nbsp;
+        <a href="https://github.com/Abhiramrathod/astra/blob/main/astra-sample/src/main/java/io/astra/sample/spring/OrderAgent.java" target="_blank" rel="noopener" className="source-link">
+          OrderAgent.java &rarr;
+        </a>
+      </p>
+      <p>A complete <code>@SpringBootApplication</code> with <code>@EnableAstra</code>, a service bean, and an agent with payment validation, picking, and shipping actions. See the <a href="#/spring">Spring guide</a> for details.</p>
+
+      <hr />
 
       <h2>Writing your own demos</h2>
       <p>

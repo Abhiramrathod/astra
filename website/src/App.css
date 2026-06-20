@@ -760,6 +760,27 @@ tr:hover td {
   background: var(--primary-bg);
 }
 
+/* ---- Source links ---- */
+
+.source-link {
+  display: inline-block;
+  font-size: 0.82rem;
+  color: var(--gold);
+  text-decoration: none;
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+  font-family: var(--font-heading);
+  letter-spacing: 0.04em;
+}
+
+.source-link:hover {
+  background: rgba(201, 168, 76, 0.08);
+  border-color: var(--gold);
+  box-shadow: 0 0 10px rgba(201, 168, 76, 0.15);
+}
+
 /* ---- Blockquotes ---- */
 
 blockquote {
