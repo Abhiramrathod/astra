@@ -180,9 +180,6 @@ strong { color: var(--text); font-weight: 600; }
 /* ---- Header ---- */
 
 .header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
   background: transparent;
   height: var(--header-h);
 }
@@ -361,14 +358,14 @@ strong { color: var(--text); font-weight: 600; }
 .mobile-dropdown {
   display: none;
   position: fixed;
-  top: var(--header-h);
+  top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   background: var(--bg);
   z-index: 99;
   overflow-y: auto;
-  padding: 1rem 1.5rem;
+  padding: 5rem 1.5rem 1.5rem;
   animation: fadeIn 0.2s ease-out;
 }
 
