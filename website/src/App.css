@@ -183,22 +183,8 @@ strong { color: var(--text); font-weight: 600; }
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(7, 7, 13, 0.92);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border);
+  background: transparent;
   height: var(--header-h);
-}
-
-.header::after {
-  content: '';
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--primary), var(--gold), var(--primary), transparent);
-  opacity: 0.3;
 }
 
 .header-inner {
@@ -379,14 +365,11 @@ strong { color: var(--text); font-weight: 600; }
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(7, 7, 13, 0.98);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: var(--bg);
   z-index: 99;
   overflow-y: auto;
   padding: 1rem 1.5rem;
   animation: fadeIn 0.2s ease-out;
-  border-top: 1px solid var(--border);
 }
 
 .mobile-dropdown.open { display: block; }
