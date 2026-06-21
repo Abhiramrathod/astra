@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.*;
 
+/** Default implementation of {@link Plan} that executes actions sequentially. */
 public class DefaultPlan implements Plan {
     private static final Logger log = LoggerFactory.getLogger(DefaultPlan.class);
     private final List<ActionInfo> actions;

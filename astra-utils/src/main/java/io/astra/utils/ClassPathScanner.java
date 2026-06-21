@@ -5,6 +5,7 @@ import java.net.*;
 import java.util.*;
 import java.util.jar.*;
 
+/** Utility for scanning the classpath to discover classes within a given package. */
 public final class ClassPathScanner {
     private ClassPathScanner() {}
 

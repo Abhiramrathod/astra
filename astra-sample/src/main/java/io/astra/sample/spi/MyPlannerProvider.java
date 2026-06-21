@@ -5,6 +5,9 @@ import io.astra.api.config.AstraConfig;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * {@link PlannerProvider} that supplies {@link MyCustomPlanner} for COST_BASED planning.
+ */
 public class MyPlannerProvider implements PlannerProvider {
     @Override
     public PlannerType type() {

@@ -2,6 +2,9 @@ package io.astra.api.event;
 
 import java.util.*;
 
+/**
+ * An event with a type and immutable key-value attributes.
+ */
 public class AstraEvent {
     private final AstraEventType type;
     private final Map<String, Object> attributes;

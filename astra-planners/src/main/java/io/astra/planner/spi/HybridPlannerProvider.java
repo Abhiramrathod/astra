@@ -6,6 +6,7 @@ import io.astra.planner.hybrid.HybridPlanner;
 import java.util.List;
 import java.util.Map;
 
+/** SPI provider for {@link io.astra.planner.hybrid.HybridPlanner}. */
 public class HybridPlannerProvider implements PlannerProvider {
     @Override
     public PlannerType type() { return PlannerType.HYBRID; }

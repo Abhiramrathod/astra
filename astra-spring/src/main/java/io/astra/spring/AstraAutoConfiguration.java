@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+/** Spring auto-configuration that discovers {@link io.astra.annotation.Agent @Agent}-annotated beans and builds an {@link Astra} instance. */
 public class AstraAutoConfiguration {
 
     @Bean

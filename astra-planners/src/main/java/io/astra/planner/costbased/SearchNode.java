@@ -3,6 +3,7 @@ package io.astra.planner.costbased;
 import io.astra.api.*;
 import java.util.*;
 
+/** Node in the A* search tree used by {@link CostBasedPlanner}. */
 class SearchNode {
     final WorldState state;
     final SearchNode parent;

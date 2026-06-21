@@ -5,6 +5,7 @@ import {
   HomeIcon, RocketIcon, BlocksIcon, GitBranchIcon,
   BookOpenIcon, CpuIcon, FileCodeIcon, HelpCircleIcon,
   GithubIcon, MenuIcon, XIcon, PuzzleIcon, LeafIcon,
+  SunIcon, MoonIcon,
 } from './Icons'
 
 const navLinks = [
@@ -23,6 +24,20 @@ const navLinks = [
 export default function Layout({ children }: { children: ReactNode }) {
   const location = useLocation()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [theme, setTheme] = useState(() => {
+    const saved = localStorage.getItem('astra-theme')
+    if (saved) return saved
+    return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+  })
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme)
+    localStorage.setItem('astra-theme', theme)
+  }, [theme])
+
+  function toggleTheme() {
+    setTheme(t => t === 'dark' ? 'light' : 'dark')
+  }
 
   useEffect(() => {
     setMenuOpen(false)
@@ -49,6 +64,9 @@ export default function Layout({ children }: { children: ReactNode }) {
           </nav>
 
           <div className="header-actions">
+            <button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">
+              {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
+            </button>
             <a href="https://github.com/Abhiramrathod/astra" target="_blank" rel="noopener" aria-label="GitHub">
               <GithubIcon />
             </a>

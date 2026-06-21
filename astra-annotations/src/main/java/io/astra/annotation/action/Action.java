@@ -3,6 +3,7 @@ package io.astra.annotation.action;
 import io.astra.annotation.fact.Fact;
 import java.lang.annotation.*;
 
+/** Defines an action with preconditions, effects, cost, and utility. */
 @Repeatable(Actions.class)
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

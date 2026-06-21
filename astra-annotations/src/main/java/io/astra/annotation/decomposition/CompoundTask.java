@@ -2,6 +2,7 @@ package io.astra.annotation.decomposition;
 
 import java.lang.annotation.*;
 
+/** Defines a compound task decomposable into subtasks. */
 @Repeatable(CompoundTasks.class)
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

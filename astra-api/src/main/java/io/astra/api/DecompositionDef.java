@@ -2,6 +2,7 @@ package io.astra.api;
 
 import java.util.*;
 
+/** Definition of a single decomposition strategy with preconditions and subtasks. */
 public class DecompositionDef {
     private final String name;
     private final String description;

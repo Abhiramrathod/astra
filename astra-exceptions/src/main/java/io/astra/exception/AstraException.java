@@ -1,5 +1,6 @@
 package io.astra.exception;
 
+/** Base exception for all Astra framework errors. */
 public class AstraException extends RuntimeException {
     private final String errorCode;
 

@@ -8,6 +8,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Service;
 
+/**
+ * Spring Boot application that enables Astra for order processing.
+ */
 @SpringBootApplication
 @EnableAstra
 public class OrderApp {
@@ -16,6 +19,9 @@ public class OrderApp {
     }
 }
 
+/**
+ * Service that delegates order processing to the Astra engine.
+ */
 @Service
 class OrderService {
     private final Astra astra;

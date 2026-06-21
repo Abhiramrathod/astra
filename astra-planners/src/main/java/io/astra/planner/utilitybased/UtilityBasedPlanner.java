@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.stream.*;
 
+/** Greedy planner that selects the highest-utility action at each step. */
 public class UtilityBasedPlanner implements Planner {
     private static final Logger log = LoggerFactory.getLogger(UtilityBasedPlanner.class);
     private final AstraConfig config;

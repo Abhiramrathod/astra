@@ -2,6 +2,7 @@ package io.astra.exception.goal;
 
 import io.astra.exception.AstraException;
 
+/** Thrown when a requested goal is not found. */
 public class GoalNotFoundException extends AstraException {
     private final String goalName;
 

@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.concurrent.*;
 
+/** Default {@link EventBus} implementation using a {@link CopyOnWriteArrayList} of listeners. */
 public class DefaultEventBus implements EventBus {
     private static final Logger log = LoggerFactory.getLogger(DefaultEventBus.class);
     private final List<AstraEventListener> listeners = new CopyOnWriteArrayList<>();

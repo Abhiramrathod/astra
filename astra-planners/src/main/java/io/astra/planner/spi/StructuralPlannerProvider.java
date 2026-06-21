@@ -6,6 +6,7 @@ import io.astra.planner.structural.StructuralPlanner;
 import java.util.List;
 import java.util.Map;
 
+/** SPI provider for {@link io.astra.planner.structural.StructuralPlanner}. */
 public class StructuralPlannerProvider implements PlannerProvider {
     @Override
     public PlannerType type() { return PlannerType.STRUCTURAL; }

@@ -3,6 +3,7 @@ package io.astra.config;
 import io.astra.api.config.AstraConfig;
 import java.util.*;
 
+/** An {@link AstraConfig} backed by an in-memory {@link Map}. */
 public class MapConfigProvider implements AstraConfig {
     private final Map<String, String> values;
 

@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" fill="none">
+  <defs>
+    <linearGradient id="boxGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#181830" />
+      <stop offset="100%" stop-color="#0f0f1e" />
+    </linearGradient>
+    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="rgba(220,38,38,0.15)" />
+      <stop offset="100%" stop-color="rgba(201,168,76,0.08)" />
+    </linearGradient>
+    <filter id="shadow" x="-2" y="-2" width="4" height="4">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="rgba(0,0,0,0.4)" />
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#5a5470" />
+    </marker>
+    <marker id="arrowGold" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#c9a84c" />
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="620" rx="12" fill="url(#glow)" />
+
+  <!-- Title -->
+  <text x="450" y="32" text-anchor="middle" font-family="Cinzel, Georgia, serif" font-size="18" fill="#c9a84c" letter-spacing="3">MODULE ARCHITECTURE</text>
+  <line x1="150" y1="42" x2="750" y2="42" stroke="#1e1a30" stroke-width="1" />
+  <text x="450" y="58" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#5a5470">Dependency arrows flow upward — each module depends on astra-api</text>
+
+  <!-- Layer 1: astra-annotations -->
+  <rect x="340" y="70" width="220" height="38" rx="6" fill="url(#boxGrad)" stroke="#c9a84c" stroke-width="1" filter="url(#shadow)" />
+  <text x="450" y="94" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#e4c766" font-weight="600">astra-annotations</text>
+
+  <!-- Arrow annotations → api -->
+  <line x1="450" y1="108" x2="450" y2="130" stroke="#5a5470" stroke-width="1.5" marker-end="url(#arrow)" />
+
+  <!-- Layer 2: astra-api -->
+  <rect x="340" y="130" width="220" height="38" rx="6" fill="url(#boxGrad)" stroke="#dc2626" stroke-width="1.5" filter="url(#shadow)" />
+  <text x="450" y="154" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#ef4444" font-weight="600">astra-api (interfaces)</text>
+
+  <!-- Arrow api → implementation layer -->
+  <line x1="450" y1="168" x2="450" y2="200" stroke="#c9a84c" stroke-width="2" marker-end="url(#arrowGold)" />
+
+  <!-- Layer 3: Implementation modules (4 columns x 3 rows + 1 at bottom) -->
+  <!-- Row 1 -->
+  <rect x="50" y="200" width="170" height="34" rx="5" fill="url(#boxGrad)" stroke="#2a2540" stroke-width="1" filter="url(#shadow)" />
+  <text x="135" y="221" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#9890a8">astra-utils</text>
+
+  <rect x="250" y="200" width="170" height="34" rx="5" fill="url(#boxGrad)" stroke="#2a2540" stroke-width="1" filter="url(#shadow)" />
+  <text x="335" y="221" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#9890a8">astra-scanner</text>
+
+  <rect x="450" y="200" width="170" height="34" rx="5" fill="url(#boxGrad)" stroke="#2a2540" stroke-width="1" filter="url(#shadow)" />
+  <text x="535" y="221" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#9890a8">astra-config</text>
+
+  <rect x="650" y="200" width="170" height="34" rx="5" fill="url(#boxGrad)" stroke="#2a2540" stroke-width="1" filter="url(#shadow)" />
+  <text x="735" y="221" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#9890a8">astra-exceptions</text>
+
+  <!-- Row 2 -->
+  <rect x="50" y="250" width="170" height="34" rx="5" fill="url(#boxGrad)" stroke="#2a2540" stroke-width="1" filter="url(#shadow)" />
+  <text x="135" y="271" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#9890a8">astra-events</text>
+
+  <rect x="250" y="250" width="170" height="34" rx="5" fill="url(#boxGrad)" stroke="#2a2540" stroke-width="1" filter="url(#shadow)" />
+  <text x="335" y="271" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#9890a8">astra-interceptors</text>
+
+  <rect x="450" y="250" width="170" height="34" rx="5" fill="url(#boxGrad)" stroke="#2a2540" stroke-width="1" filter="url(#shadow)" />
+  <text x="535" y="271" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#9890a8">astra-lifecycle</text>
+
+  <rect x="650" y="250" width="170" height="34" rx="5" fill="url(#boxGrad)" stroke="#2a2540" stroke-width="1" filter="url(#shadow)" />
+  <text x="735" y="271" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#9890a8">astra-planners</text>
+
+  <!-- Row 3 -->
+  <rect x="50" y="300" width="170" height="34" rx="5" fill="url(#boxGrad)" stroke="#dc2626" stroke-width="1" filter="url(#shadow)" />
+  <text x="135" y="321" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#ef4444">astra-validation</text>
+
+  <rect x="250" y="300" width="170" height="34" rx="5" fill="url(#boxGrad)" stroke="#dc2626" stroke-width="1" filter="url(#shadow)" />
+  <text x="335" y="321" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#ef4444">astra-store</text>
+
+  <rect x="450" y="300" width="170" height="34" rx="5" fill="url(#boxGrad)" stroke="#dc2626" stroke-width="1" filter="url(#shadow)" />
+  <text x="535" y="321" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#ef4444">astra-agentbus</text>
+
+  <rect x="650" y="300" width="170" height="34" rx="5" fill="url(#boxGrad)" stroke="#dc2626" stroke-width="1" filter="url(#shadow)" />
+  <text x="735" y="321" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#ef4444">astra-mcp</text>
+
+  <!-- Bottom row - single centered -->
+  <rect x="340" y="350" width="220" height="34" rx="5" fill="url(#boxGrad)" stroke="#dc2626" stroke-width="1" filter="url(#shadow)" />
+  <text x="450" y="371" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#ef4444">astra-telemetry</text>
+
+  <!-- Big arrow up from core to say these feed into core -->
+  <line x1="450" y1="384" x2="450" y2="430" stroke="#c9a84c" stroke-width="2" marker-end="url(#arrowGold)" />
+
+  <!-- Layer 4: astra-core -->
+  <rect x="250" y="430" width="400" height="46" rx="8" fill="url(#boxGrad)" stroke="#c9a84c" stroke-width="1.5" filter="url(#shadow)" />
+  <text x="450" y="450" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="14" fill="#e4c766" font-weight="600">astra-core</text>
+  <text x="450" y="467" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#5a5470">DefaultAstra · Builder · StateHistory · Policy · Cache · Skills · Scheduler · Shell</text>
+
+  <!-- Arrows core → spring/sample/tests -->
+  <line x1="400" y1="476" x2="300" y2="510" stroke="#5a5470" stroke-width="1.5" marker-end="url(#arrow)" />
+  <line x1="450" y1="476" x2="450" y2="510" stroke="#5a5470" stroke-width="1.5" marker-end="url(#arrow)" />
+  <line x1="500" y1="476" x2="600" y2="510" stroke="#5a5470" stroke-width="1.5" marker-end="url(#arrow)" />
+
+  <!-- Layer 5: Application modules -->
+  <rect x="210" y="510" width="170" height="34" rx="5" fill="url(#boxGrad)" stroke="#2a2540" stroke-width="1" filter="url(#shadow)" />
+  <text x="295" y="533" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#9890a8">astra-spring</text>
+
+  <rect x="410" y="510" width="170" height="34" rx="5" fill="url(#boxGrad)" stroke="#2a2540" stroke-width="1" filter="url(#shadow)" />
+  <text x="495" y="533" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#9890a8">astra-sample</text>
+
+  <rect x="610" y="510" width="170" height="34" rx="5" fill="url(#boxGrad)" stroke="#2a2540" stroke-width="1" filter="url(#shadow)" />
+  <text x="695" y="533" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#9890a8">astra-tests</text>
+
+  <!-- Left annotation -->
+  <text x="30" y="225" font-family="Inter, sans-serif" font-size="9" fill="#5a5470" transform="rotate(-90, 30, 225)">CORE IMPLEMENTATIONS</text>
+  <text x="30" y="320" font-family="Inter, sans-serif" font-size="9" fill="#5a5470" transform="rotate(-90, 30, 320)">NEW MODULES</text>
+
+  <!-- Legend -->
+  <rect x="50" y="565" width="12" height="12" rx="2" fill="none" stroke="#dc2626" stroke-width="1.5" />
+  <text x="68" y="575" font-family="Inter, sans-serif" font-size="10" fill="#9890a8">New module</text>
+  <rect x="160" y="565" width="12" height="12" rx="2" fill="none" stroke="#c9a84c" stroke-width="1.5" />
+  <text x="178" y="575" font-family="Inter, sans-serif" font-size="10" fill="#9890a8">Foundation / Core</text>
+  <rect x="300" y="565" width="12" height="12" rx="2" fill="none" stroke="#2a2540" stroke-width="1" />
+  <text x="318" y="575" font-family="Inter, sans-serif" font-size="10" fill="#9890a8">Established module</text>
+</svg>

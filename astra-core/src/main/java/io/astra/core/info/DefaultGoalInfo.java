@@ -3,6 +3,10 @@ package io.astra.core.info;
 import io.astra.api.GoalInfo;
 import java.util.*;
 
+/**
+ * Minimal implementation of {@link GoalInfo} carrying a name and a
+ * condition map that the world state must satisfy.
+ */
 public class DefaultGoalInfo implements GoalInfo {
     private final String name;
     private final Map<String, String> condition;

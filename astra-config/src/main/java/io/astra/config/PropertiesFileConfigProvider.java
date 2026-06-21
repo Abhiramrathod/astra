@@ -5,6 +5,7 @@ import java.io.*;
 import java.nio.file.*;
 import java.util.Properties;
 
+/** An {@link MapConfigProvider} that loads key-value pairs from a Java {@link Properties} file. */
 public class PropertiesFileConfigProvider extends MapConfigProvider {
     public PropertiesFileConfigProvider(String path) {
         load(Path.of(path));

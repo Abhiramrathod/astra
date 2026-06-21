@@ -1,7 +1,9 @@
 package io.astra.api;
 
+import io.astra.api.fact.Fact;
 import java.util.*;
 
+/** Factory and utility methods for creating {@link WorldState} instances. */
 public final class WorldStates {
     private WorldStates() {}
 
@@ -26,11 +28,22 @@ public final class WorldStates {
         return new SimpleWorldState(map);
     }
 
+    public static WorldState fromSnapshot(Snapshot snapshot) {
+        return snapshot.restore();
+    }
+
     private static class SimpleWorldState implements WorldState {
         private final Map<String, String> facts;
+        private final Map<String, String> typeHints;
 
         SimpleWorldState(Map<String, String> facts) {
             this.facts = Map.copyOf(facts);
+            this.typeHints = Map.of();
+        }
+
+        private SimpleWorldState(Map<String, String> facts, Map<String, String> typeHints) {
+            this.facts = facts;
+            this.typeHints = typeHints;
         }
 
         @Override
@@ -58,7 +71,34 @@ public final class WorldStates {
         public WorldState set(String key, String value) {
             var copy = new LinkedHashMap<>(facts);
             copy.put(key, value);
-            return new SimpleWorldState(copy);
+            return new SimpleWorldState(Map.copyOf(copy), typeHints);
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public <T> Optional<T> getTyped(String key, Class<T> type) {
+            String raw = facts.get(key);
+            if (raw == null) return Optional.empty();
+            String hint = typeHints.get(key);
+            if (hint != null && !hint.equals(type.getName())) return Optional.empty();
+            Fact<T> fact = Fact.deserialize(key, raw, type);
+            return Optional.ofNullable(fact.getValue());
+        }
+
+        @Override
+        public <T> WorldState setTyped(String key, T value, Class<T> type) {
+            var factsCopy = new LinkedHashMap<>(facts);
+            var hintsCopy = new LinkedHashMap<>(typeHints);
+            factsCopy.put(key, value == null ? "null" : value.toString());
+            hintsCopy.put(key, type.getName());
+            return new SimpleWorldState(Map.copyOf(factsCopy), Map.copyOf(hintsCopy));
+        }
+
+        @Override
+        public Snapshot snapshot() {
+            Map<String, String> frozenFacts = this.facts;
+            Map<String, String> frozenHints = this.typeHints;
+            return () -> new SimpleWorldState(frozenFacts, frozenHints);
         }
 
         @Override

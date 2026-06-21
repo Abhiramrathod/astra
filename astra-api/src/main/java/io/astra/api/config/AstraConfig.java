@@ -2,6 +2,9 @@ package io.astra.api.config;
 
 import java.util.Optional;
 
+/**
+ * Configuration interface for typed key-value access.
+ */
 public interface AstraConfig {
     <T> T get(String key, Class<T> type);
     <T> T getOrDefault(String key, Class<T> type, T defaultValue);

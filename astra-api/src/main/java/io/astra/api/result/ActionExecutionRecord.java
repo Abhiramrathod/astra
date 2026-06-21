@@ -4,6 +4,9 @@ import io.astra.api.*;
 import java.time.Duration;
 import java.util.*;
 
+/**
+ * Record of a single action execution including before/after state.
+ */
 public class ActionExecutionRecord {
     private final ActionInfo action;
     private final WorldState stateBefore;

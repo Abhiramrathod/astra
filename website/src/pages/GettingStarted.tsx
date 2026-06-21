@@ -17,7 +17,7 @@ export default function GettingStarted() {
     <artifactId>astra-core</artifactId>
     <version>0.1.0</version>
 </dependency>`}</code></pre>
-        <p>This single dependency pulls in everything you need: <code>astra-api</code> (interfaces), <code>astra-planners</code> (all planner implementations), <code>astra-scanner</code> (annotation processing), <code>astra-utils</code>, <code>astra-config</code>, <code>astra-exceptions</code>, <code>astra-events</code>, <code>astra-interceptors</code>, and <code>astra-lifecycle</code>.</p>
+        <p>This single dependency pulls in everything you need: <code>astra-api</code> (interfaces), <code>astra-planners</code> (all planner implementations), <code>astra-scanner</code> (annotation processing), <code>astra-utils</code>, <code>astra-config</code>, <code>astra-exceptions</code>, <code>astra-events</code>, <code>astra-interceptors</code>, <code>astra-lifecycle</code>, <code>astra-validation</code>, <code>astra-store</code>, <code>astra-agentbus</code>, <code>astra-mcp</code>, and <code>astra-telemetry</code>.</p>
 
       <h3>Gradle</h3>
       <pre><code>{`implementation 'io.astra:astra-core:0.1.0'`}</code></pre>
@@ -30,6 +30,38 @@ export default function GettingStarted() {
           <tr><td><code>jackson-databind</code> (via <code>astra-utils</code>)</td><td>JSON serialization of world states</td></tr>
         </tbody>
       </table>
+      <p>Other modules like <code>astra-validation</code>, <code>astra-store</code>, <code>astra-agentbus</code>, <code>astra-mcp</code>, and <code>astra-telemetry</code> are included transitively by <code>astra-core</code> and need no extra dependency declaration.</p>
+
+      <h2>Quick Start — Simplified DX</h2>
+      <p>No annotations, no goals to define, no builder chain. Extend <code>AgentBase</code> and write plain public void methods:</p>
+      <pre><code>{`import io.astra.api.AgentBase;
+import io.astra.core.DefaultAstra;
+
+public class SimpleAgent extends AgentBase {
+    public void fetchData() {
+        System.out.println("Fetching data...");
+    }
+    public void analyze() {
+        System.out.println("Analyzing...");
+    }
+}
+
+// One-liner:
+Astra astra = DefaultAstra.simple(new SimpleAgent());
+astra.execute("_run_all", WorldStates.empty());`}</code></pre>
+      <p>Public void no-arg methods become convention actions automatically. Goals are auto-derived. Or use the programmatic API on <code>AgentBase</code>:</p>
+      <pre><code>{`AgentBase agent = new AgentBase() {{
+    addAction("fetch", () -> System.out.println("Fetching..."));
+    addAction("process", () -> System.out.println("Processing..."),
+        Map.of("raw", "true"), Map.of("processed", "true"), 2.0f);
+    addGoal("done", Map.of("processed", "true"));
+}};
+Astra astra = DefaultAstra.builder()
+    .register(agent)
+    .withPlanner(PlannerType.COST_BASED)
+    .build();
+ExecutionResult result = astra.executeWithResult("done",
+    WorldStates.of("raw", "true"));`}</code></pre>
 
       <h2>Core Concepts</h2>
 
@@ -122,6 +154,27 @@ Goal condition: coffeeServed = true`}</code></pre>
       <p><strong>Interceptors</strong> hook into action execution (<code>beforeAction</code>, <code>afterAction</code>, <code>onError</code>) to add cross-cutting concerns like validation, authentication, or performance tracking — without modifying the agent code.</p>
 
       <h2>Writing Your First Agent</h2>
+      <p>Two styles are available. Extend <code>AgentBase</code> for the quickest start (no annotations), or use the full annotation DSL for fine-grained control.</p>
+
+      <h3>Style A: Convention-based (AgentBase)</h3>
+      <p>Extend <code>AgentBase</code> — public void no-arg methods become actions automatically. No annotations needed.</p>
+      <pre><code>{`import io.astra.api.AgentBase;
+import io.astra.api.Astra;
+import io.astra.api.WorldStates;
+import io.astra.core.DefaultAstra;
+
+public class SimpleAgent extends AgentBase {
+    public void myAction() {
+        System.out.println("Action executed!");
+    }
+}
+
+// One-liner:
+Astra astra = DefaultAstra.simple(new SimpleAgent());
+astra.execute("_run_all", WorldStates.empty());`}</code></pre>
+      <p>Goals are auto-derived from action effects. If no effects are declared, all actions run in sequence via the <code>_run_all</code> goal.</p>
+
+      <h3>Style B: Annotation-based</h3>
       <p>An agent is a plain Java class annotated with <code>@Agent</code>. The class defines <strong>actions</strong> (what the agent can do), <strong>goals</strong> (what the agent wants to achieve), and optionally <strong>compound tasks</strong> (hierarchical task networks).</p>
 
       <h3>1. Create the agent class</h3>
@@ -253,7 +306,7 @@ cd astra
 </dependency>`}</code></pre>
 
       <h3>Agent class not found by scanner</h3>
-      <p>Ensure the class is annotated with <code>@Agent</code> and is public. The <code>AgentScanner</code> uses <code>Class.getMethods()</code> which only returns public methods.</p>
+      <p>If using annotations, ensure the class is annotated with <code>@Agent</code> and is public. The <code>AgentScanner</code> uses <code>Class.getMethods()</code> which only returns public methods. Alternatively, extend <code>AgentBase</code> instead — no <code>@Agent</code> annotation required.</p>
     </>
   )
 }

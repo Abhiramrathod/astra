@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.concurrent.*;
 
+/** Default {@link InterceptorChain} that manages and invokes a list of {@link ActionInterceptor}s. */
 public class DefaultInterceptorChain implements InterceptorChain {
     private static final Logger log = LoggerFactory.getLogger(DefaultInterceptorChain.class);
     private final List<ActionInterceptor> interceptors = new CopyOnWriteArrayList<>();

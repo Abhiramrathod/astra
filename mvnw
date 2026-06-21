@@ -35,11 +35,11 @@ if [ ! -f "$WRAPPER_JAR" ]; then
   exit 1
 fi
 
-# On WSL, convert Linux paths to Windows paths for the Windows Java executable
-if command -v wslpath >/dev/null 2>&1; then
-  WRAPPER_JAR=$(wslpath -w "$WRAPPER_JAR")
-  MAVEN_PROJECTBASEDIR=$(wslpath -w "$MAVEN_PROJECTBASEDIR")
-fi
+# On WSL with a Windows JDK, uncomment the following to convert paths:
+# if command -v wslpath >/dev/null 2>&1; then
+#   WRAPPER_JAR=$(wslpath -w "$WRAPPER_JAR")
+#   MAVEN_PROJECTBASEDIR=$(wslpath -w "$MAVEN_PROJECTBASEDIR")
+# fi
 
 exec "$JAVACMD" $MAVEN_OPTS \
   -classpath "$WRAPPER_JAR" \

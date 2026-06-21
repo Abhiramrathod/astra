@@ -3,6 +3,10 @@ package io.astra.core.info;
 import io.astra.api.ActionInfo;
 import java.util.*;
 
+/**
+ * Standard implementation of {@link ActionInfo} with name, preconditions,
+ * effects, cost, utility, and an executor {@link Runnable}.
+ */
 public class DefaultActionInfo implements ActionInfo {
     private final String name;
     private final String description;

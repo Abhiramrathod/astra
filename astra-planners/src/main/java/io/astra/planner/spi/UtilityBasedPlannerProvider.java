@@ -6,6 +6,7 @@ import io.astra.planner.utilitybased.UtilityBasedPlanner;
 import java.util.List;
 import java.util.Map;
 
+/** SPI provider for {@link io.astra.planner.utilitybased.UtilityBasedPlanner}. */
 public class UtilityBasedPlannerProvider implements PlannerProvider {
     @Override
     public PlannerType type() { return PlannerType.UTILITY_BASED; }

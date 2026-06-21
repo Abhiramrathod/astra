@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.stream.*;
 
+/** Hierarchical task decomposition planner that expands compound tasks into primitives. */
 public class StructuralPlanner implements Planner {
     private static final Logger log = LoggerFactory.getLogger(StructuralPlanner.class);
     private final AstraConfig config;

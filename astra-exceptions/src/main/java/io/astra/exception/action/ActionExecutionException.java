@@ -3,6 +3,7 @@ package io.astra.exception.action;
 import io.astra.api.ActionInfo;
 import io.astra.exception.AstraException;
 
+/** Thrown when an action fails to execute. */
 public class ActionExecutionException extends AstraException {
     private final ActionInfo action;
 

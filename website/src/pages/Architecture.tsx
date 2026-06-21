@@ -111,6 +111,47 @@ export default function Architecture() {
       </ul>
       <p>The SPI registration file at <code>META-INF/services/io.astra.api.PlannerProvider</code> lists all providers for <code>ServiceLoader</code> discovery.</p>
 
+      <h3>astra-validation</h3>
+      <p>
+        Pre-action validation framework. <code>DefaultValidator</code> checks world state for null values
+        and empty strings before execution. <code>ValidationInterceptor</code> hooks into the interceptor
+        chain and throws <code>IllegalArgumentException</code> on validation failure, with an
+        accompanying <code>VALIDATION_FAILED</code> event.
+      </p>
+
+      <h3>astra-store</h3>
+      <p>
+        World state persistence. <code>WorldStateStore</code> interface with two implementations:
+      </p>
+      <ul>
+        <li><code>InMemoryWorldStateStore</code> — <code>ConcurrentHashMap</code>-backed, ephemeral storage</li>
+        <li><code>FileWorldStateStore</code> — persists states as <code>.properties</code> files on disk</li>
+      </ul>
+
+      <h3>astra-agentbus</h3>
+      <p>
+        Inter-agent communication. <code>DefaultAgentBus</code> provides publish-subscribe messaging
+        between named agents. Supports direct <code>send()</code>, <code>broadcast()</code>, and
+        topic-based subscriptions. Each message publishes an <code>AGENT_MESSAGE</code> event.
+      </p>
+
+      <h3>astra-mcp</h3>
+      <p>
+        Model Context Protocol (MCP) support. <code>DefaultMcpServer</code> exposes agent actions as
+        MCP tools with JSON Schema input definitions. <code>DefaultMcpClient</code> connects to remote
+        MCP servers to discover and invoke tools remotely.
+      </p>
+
+      <h3>astra-telemetry</h3>
+      <p>
+        Observability infrastructure:
+      </p>
+      <ul>
+        <li><code>Slf4jTracer</code> — traces planning and action execution via SLF4J</li>
+        <li><code>SimpleMetricsCollector</code> — in-memory counters, gauges, and timers</li>
+        <li><code>TelemetryInterceptor</code> — automatically wires into the action pipeline</li>
+      </ul>
+
       <h3>astra-core</h3>
       <p>
         The central runtime module. <code>DefaultAstra</code> implements the <code>Astra</code>
@@ -121,6 +162,16 @@ export default function Architecture() {
         <li>Planner discovery via <code>ServiceLoader</code></li>
         <li>Action execution loop with event publishing and interceptor invocation</li>
         <li>Async execution via <code>CompletableFuture</code></li>
+        <li>OODA-loop replanning with configurable replan limit</li>
+        <li>Natural-language query routing with keyword scoring</li>
+        <li>State rollback via <code>StateHistory</code> with snapshot/restore</li>
+        <li>Plan caching via <code>LruPlanCache</code></li>
+        <li>Policy enforcement via <code>PolicyInterceptor</code> + <code>DefaultPolicyChecker</code></li>
+        <li>Skills framework via <code>SkillManager</code></li>
+        <li>Composite agent support via <code>DefaultCompositeAgent</code></li>
+        <li>Goal choice approval via <code>ConsoleGoalChoiceApprover</code></li>
+        <li>Scheduling via <code>DefaultSchedulerService</code></li>
+        <li>Interactive REPL via <code>DefaultRepl</code></li>
         <li>Synchronized data structures for thread safety</li>
       </ul>
 
@@ -145,19 +196,10 @@ export default function Architecture() {
       <p>JUnit 5 test suite with 12 tests covering all planners, including edge cases like no-path scenarios and precondition-based branching.</p>
 
       <h2>Dependency Graph</h2>
-      <pre><code>{`annotations
-    └── api
-          ├── scanners ────┐
-          ├── config ──────┤
-          ├── exceptions ──┤
-          ├── events ──────┤
-          ├── interceptors ─┤
-          ├── lifecycle ───┤
-          └── planners ────┤
-                           └── core
-                                ├── spring
-                                ├── sample
-                                └── tests`}</code></pre>
+      <p>The diagram below shows the module hierarchy. Arrows indicate dependencies — each module depends on <code>astra-api</code>. New modules are highlighted in red.</p>
+      <div style={{textAlign: 'center', margin: '24px 0'}}>
+        <img src="architecture.svg" alt="Astra module architecture diagram" style={{maxWidth: '100%', borderRadius: 12, boxShadow: '0 4px 24px rgba(0,0,0,0.3)'}} />
+      </div>
 
       <h2>Planning Pipeline</h2>
       <ol>
@@ -182,6 +224,8 @@ export default function Architecture() {
         <thead><tr><th>Event</th><th>When fired</th></tr></thead>
         <tbody>
           <tr><td><code>AGENT_REGISTERED</code></td><td>After an agent is registered via the builder</td></tr>
+          <tr><td><code>AGENT_REMOVED</code></td><td>When an agent is removed</td></tr>
+          <tr><td><code>AGENT_MESSAGE</code></td><td>When an agent sends a message via AgentBus</td></tr>
           <tr><td><code>PLAN_STARTED</code></td><td>When <code>executeWithResult</code> begins</td></tr>
           <tr><td><code>PLAN_COMPLETED</code></td><td>When a plan is successfully found</td></tr>
           <tr><td><code>PLAN_FAILED</code></td><td>When no plan could be found</td></tr>
@@ -190,6 +234,14 @@ export default function Architecture() {
           <tr><td><code>ACTION_FAILED</code></td><td>When an action throws an exception during execution</td></tr>
           <tr><td><code>GOAL_SATISFIED</code></td><td>When the final state matches the goal condition</td></tr>
           <tr><td><code>GOAL_UNSATISFIABLE</code></td><td>When the final state does not match the goal condition</td></tr>
+          <tr><td><code>VALIDATION_FAILED</code></td><td>When action preconditions fail validation</td></tr>
+          <tr><td><code>POLICY_DENIED</code></td><td>When a policy check blocks an action</td></tr>
+          <tr><td><code>SKILL_LOADED</code></td><td>When a skill is loaded via SkillManager</td></tr>
+          <tr><td><code>SKILL_UNLOADED</code></td><td>When a skill is unloaded</td></tr>
+          <tr><td><code>SCHEDULED_TASK_TRIGGERED</code></td><td>When a scheduled action fires</td></tr>
+          <tr><td><code>MCP_TOOL_CALLED</code></td><td>When an MCP tool is invoked</td></tr>
+          <tr><td><code>STATE_SNAPSHOT</code></td><td>When a state snapshot is taken</td></tr>
+          <tr><td><code>STATE_ROLLBACK</code></td><td>When a state is rolled back</td></tr>
         </tbody>
       </table>
     </>

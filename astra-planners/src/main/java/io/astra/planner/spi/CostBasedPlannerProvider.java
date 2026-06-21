@@ -6,6 +6,7 @@ import io.astra.planner.costbased.CostBasedPlanner;
 import java.util.List;
 import java.util.Map;
 
+/** SPI provider for {@link io.astra.planner.costbased.CostBasedPlanner}. */
 public class CostBasedPlannerProvider implements PlannerProvider {
     @Override
     public PlannerType type() { return PlannerType.COST_BASED; }

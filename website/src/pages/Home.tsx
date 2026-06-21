@@ -78,6 +78,13 @@ export default function Home() {
         </div>
         <div className="feature-card">
           <div className="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          </div>
+          <h3>Simplified DX</h3>
+          <p>Extend <code>AgentBase</code> — public void no-arg methods auto-become actions, goals auto-derive, and <code>Astra.simple(agent)</code> is a one-line factory. No annotations needed.</p>
+        </div>
+        <div className="feature-card">
+          <div className="icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
           </div>
           <h3>Dynamic Utility</h3>
@@ -145,6 +152,34 @@ export default function Home() {
           </div>
           <h3>Zero LLM Deps</h3>
           <p>No OpenAI, no Anthropic, no HuggingFace. Pure classical AI — deterministic, predictable, and infinitely cheaper.</p>
+        </div>
+        <div className="feature-card">
+          <div className="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg>
+          </div>
+          <h3>Typed Facts</h3>
+          <p><code>Fact&lt;T&gt;</code> with typed getters/setters on <code>WorldState</code>. Store integers, booleans, and other typed values alongside string facts.</p>
+        </div>
+        <div className="feature-card">
+          <div className="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <h3>Validation</h3>
+          <p>Validate world state before action execution via <code>Validator</code> and <code>ValidationInterceptor</code>. Guards against nulls, empties, and custom rules.</p>
+        </div>
+        <div className="feature-card">
+          <div className="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+          </div>
+          <h3>Agent Messaging</h3>
+          <p><code>AgentBus</code> for inter-agent communication. Send messages, broadcast topics, and build multi-agent systems.</p>
+        </div>
+        <div className="feature-card">
+          <div className="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3>Composite Agent</h3>
+          <p>Aggregate multiple agents under a single <code>CompositeAgent</code> facade. Route queries based on capability.</p>
         </div>
       </div>
 
@@ -246,7 +281,7 @@ Success: true, Steps: 3`}</code></pre>
         <thead><tr><th>Module</th><th>Description</th></tr></thead>
         <tbody>
           <tr><td><code>astra-annotations</code></td><td>Annotation definitions: @Agent, @Action, @Goal, @Fact, @CompoundTask, @Decomposition</td></tr>
-          <tr><td><code>astra-api</code></td><td>Core interfaces: Astra, Planner, ActionInfo, WorldState, EventBus, PlannerProvider, PlannerType</td></tr>
+          <tr><td><code>astra-api</code></td><td>Core interfaces: Astra, Planner, ActionInfo, WorldState, EventBus, PlannerProvider, PlannerType, Fact, Snapshot</td></tr>
           <tr><td><code>astra-utils</code></td><td>ClassPathScanner, WorldStateSerializer (Jackson)</td></tr>
           <tr><td><code>astra-scanner</code></td><td>Reflects annotations into API type instances at registration time</td></tr>
           <tr><td><code>astra-config</code></td><td>Map-based and properties-file configuration providers</td></tr>
@@ -255,10 +290,15 @@ Success: true, Steps: 3`}</code></pre>
           <tr><td><code>astra-interceptors</code></td><td>DefaultInterceptorChain — before/after/error action hooks</td></tr>
           <tr><td><code>astra-lifecycle</code></td><td>LifecycleManager — agent initialization and shutdown</td></tr>
           <tr><td><code>astra-planners</code></td><td>All planner implementations + SPI providers for extensibility</td></tr>
-          <tr><td><code>astra-core</code></td><td>DefaultAstra — the main builder, runtime, and wiring</td></tr>
+          <tr><td><code>astra-validation</code></td><td>Validator interface + DefaultValidator + ValidationInterceptor for pre-action validation</td></tr>
+          <tr><td><code>astra-store</code></td><td>WorldStateStore — InMemoryWorldStateStore, FileWorldStateStore for state persistence</td></tr>
+          <tr><td><code>astra-agentbus</code></td><td>AgentBus for publish-subscribe inter-agent communication</td></tr>
+          <tr><td><code>astra-mcp</code></td><td>MCP client/server implementation for Model Context Protocol tool discovery</td></tr>
+          <tr><td><code>astra-telemetry</code></td><td>Tracer, MetricsCollector, TelemetryInterceptor for observability</td></tr>
+          <tr><td><code>astra-core</code></td><td>DefaultAstra — builder, runtime, wiring, StateHistory, plan cache, policy, skills, composite, scheduling, shell</td></tr>
           <tr><td><code>astra-spring</code></td><td>Spring Boot auto-configuration with @EnableAstra</td></tr>
           <tr><td><code>astra-sample</code></td><td>Demo agents — CoffeeAgent and CookingAgent showcasing various planning strategies</td></tr>
-          <tr><td><code>astra-tests</code></td><td>JUnit 5 test suite — 12 tests covering all planners</td></tr>
+          <tr><td><code>astra-tests</code></td><td>JUnit 5 test suite — 74 tests covering all planners and framework modules</td></tr>
         </tbody>
       </table>
 

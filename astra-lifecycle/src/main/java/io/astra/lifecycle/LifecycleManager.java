@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Map;
 import java.util.concurrent.*;
 
+/** Manages lifecycle state transitions for agent instances. */
 public class LifecycleManager {
     private static final Logger log = LoggerFactory.getLogger(LifecycleManager.class);
     private final Map<Object, AgentState> agentStates = new ConcurrentHashMap<>();

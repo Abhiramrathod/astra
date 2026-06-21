@@ -19,6 +19,11 @@
         <module>astra-interceptors</module>
         <module>astra-lifecycle</module>
         <module>astra-planners</module>
+        <module>astra-validation</module>
+        <module>astra-store</module>
+        <module>astra-agentbus</module>
+        <module>astra-mcp</module>
+        <module>astra-telemetry</module>
         <module>astra-core</module>
         <module>astra-spring</module>
         <module>astra-sample</module>

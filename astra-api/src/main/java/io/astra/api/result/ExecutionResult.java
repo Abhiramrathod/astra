@@ -4,6 +4,9 @@ import io.astra.api.*;
 import java.time.Duration;
 import java.util.*;
 
+/**
+ * The result of a full plan execution with per-action records.
+ */
 public class ExecutionResult {
     private final Plan plan;
     private final WorldState finalState;

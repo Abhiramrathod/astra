@@ -7,6 +7,7 @@ import io.astra.api.WorldStates;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/** Utility for serializing and deserializing {@link WorldState} to/from JSON. */
 public final class WorldStateSerializer {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 

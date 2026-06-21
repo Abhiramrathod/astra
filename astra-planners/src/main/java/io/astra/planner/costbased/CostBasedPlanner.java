@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.*;
 
+/** A* search planner that finds a minimal-cost action sequence to reach a goal. */
 public class CostBasedPlanner implements Planner {
     private static final Logger log = LoggerFactory.getLogger(CostBasedPlanner.class);
     private final AstraConfig config;

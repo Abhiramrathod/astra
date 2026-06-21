@@ -38,6 +38,21 @@ ExecutionResult r = astra.executeWithResult("MakeCoffee",
 - **Spring Boot** — `@EnableAstra` auto-configuration module
 - **Zero LLM dependency** — no external AI services required
 - **Java 17+** — records, sealed classes, pattern matching
+- **Typed facts** — `Fact<T>` with typed getters/setters on `WorldState`
+- **Validation framework** — `Validator` interface + `ValidationInterceptor`
+- **State persistence** — `WorldStateStore` (in-memory and file-based)
+- **Policy engine** — `@RequiresPolicy` + `PolicyChecker` for access control
+- **Plan caching** — LRU cache for repeated plan queries
+- **Agent messaging** — `AgentBus` for inter-agent communication
+- **Skills framework** — `Skill` interface + `SkillManager` for composable modules
+- **Composite agents** — `CompositeAgent` aggregates multiple agents under one facade
+- **Goal choice approval** — `GoalChoiceApprover` for human-in-the-loop routing
+- **MCP support** — Model Context Protocol client/server for tool discovery
+- **Telemetry** — `Tracer` + `MetricsCollector` + `TelemetryInterceptor`
+- **Scheduling** — `SchedulerService` for cron/delayed/repeating actions
+- **Interactive REPL** — shell for testing and debugging agents
+- **State rollback** — snapshot-based undo via `StateHistory`
+- **Simplified DX** — `AgentBase` base class: programmatic action/goal registration, convention-based action auto-detection, and `Astra.simple()` one-line factory
 
 ---
 
@@ -55,14 +70,56 @@ astra-parent
 ├── astra-interceptors  — DefaultInterceptorChain implementation
 ├── astra-lifecycle     — LifecycleManager
 ├── astra-planners      — All 4 planner implementations + SPI providers
-├── astra-core          — DefaultAstra builder + wiring
+├── astra-validation    — Validator interface, DefaultValidator, ValidationInterceptor
+├── astra-store         — WorldStateStore (InMemoryWorldStateStore, FileWorldStateStore)
+├── astra-agentbus      — AgentBus for inter-agent messaging
+├── astra-mcp           — MCP client/server for Model Context Protocol
+├── astra-telemetry     — Tracer, MetricsCollector, TelemetryInterceptor
+├── astra-core          — DefaultAstra builder + wiring + StateHistory
 ├── astra-spring        — Spring Boot auto-configuration
 ├── astra-sample        — CoffeeAgent, CookingAgent demos
-└── astra-tests         — JUnit 5 test suite (12 tests)
+└── astra-tests         — JUnit 5 test suite (74 tests)
 ```
 
 **Build order** (enforced by dependency chain):
-`annotations → api → utils + scanner + config + exceptions + events + interceptors + lifecycle + planners → core → spring → sample → tests`
+`annotations → api → utils + scanner + config + exceptions + events + interceptors + lifecycle + planners + validation + store + agentbus + mcp + telemetry → core → spring → sample → tests`
+
+A single `astra-core` dependency pulls in everything via transitive dependencies.
+
+### Quickest start — no annotations, no goals, no builder chain
+
+```java
+import io.astra.api.*;
+import io.astra.core.DefaultAstra;
+
+public class Main {
+    public static void main(String[] args) {
+        AgentBase agent = new AgentBase() {
+            public void fetchData() { System.out.println("Fetching..."); }
+            public void processData() { System.out.println("Processing..."); }
+        };
+        Astra astra = DefaultAstra.simple(agent);
+        astra.execute("_run_all", WorldStates.empty());
+    }
+}
+```
+
+Public void no-arg methods are auto-detected as convention actions. Goals are derived automatically. Or use the programmatic API:
+
+```java
+AgentBase agent = new AgentBase() {{
+    addAction("fetch", () -> System.out.println("Fetching..."));
+    addAction("process", () -> System.out.println("Processing..."),
+        Map.of("data", "?raw"), Map.of("data", "processed"), 2.0f);
+    addGoal("done", Map.of("data", "processed"));
+}};
+Astra astra = DefaultAstra.builder()
+    .register(agent)
+    .withPlanner(PlannerType.COST_BASED)
+    .build();
+ExecutionResult result = astra.executeWithResult("done",
+    WorldStates.of("data", "?raw"));
+```
 
 ---
 
@@ -88,6 +145,29 @@ Replace `VERSION` with the latest release.
 Maven automatically pulls in `astra-planners`, `astra-api`, `astra-scanner`, and all other required modules.
 
 ### Write your first agent
+
+Two styles are available — pick whichever fits your project:
+
+#### Convention-based (no annotations)
+
+```java
+import io.astra.api.AgentBase;
+import io.astra.core.DefaultAstra;
+
+public class SimpleAgent extends AgentBase {
+    public void greet() {
+        System.out.println("Hello!");
+    }
+}
+
+// One-liner:
+Astra astra = DefaultAstra.simple(new SimpleAgent());
+astra.execute("_run_all", WorldStates.empty());
+```
+
+Convention actions are public void no-argument methods. No `@Agent`, `@Action`, or `@Goal` annotations needed. Goals are auto-derived: if actions have effects they form a goal; otherwise all actions run in sequence via `_run_all`.
+
+#### Annotation-based
 
 ```java
 import io.astra.annotation.Agent;
@@ -290,7 +370,8 @@ Requires JDK 17+. The Maven wrapper (`mvnw`) handles the rest automatically.
 ./mvnw test -pl astra-tests
 ```
 
-Tests cover all four planners:
+Tests cover all four planners plus all framework modules:
+- **FeatureTests** (62 tests) — DX, typed facts, validation, store, cache, policy, agent bus, skills, composite, approval, MCP, telemetry, scheduler, state history, factory methods, builder options
 - **CostBasedPlannerTest** (3 tests) — cheapest path, goal achievement, no-path case
 - **UtilityBasedPlannerTest** (2 tests) — highest utility selection, goal achievement
 - **HybridPlannerTest** (2 tests) — sequential plan, execution

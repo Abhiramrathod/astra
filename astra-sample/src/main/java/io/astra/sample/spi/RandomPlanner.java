@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * {@link Planner} that randomly selects applicable actions until a goal is reached.
+ */
 public class RandomPlanner implements Planner {
     private final Random rand = new Random();
 

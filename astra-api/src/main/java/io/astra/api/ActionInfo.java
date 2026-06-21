@@ -2,6 +2,7 @@ package io.astra.api;
 
 import java.util.Map;
 
+/** Provides metadata and executor for a registered action. */
 public interface ActionInfo {
     String getName();
     Map<String, String> getPreconditions();

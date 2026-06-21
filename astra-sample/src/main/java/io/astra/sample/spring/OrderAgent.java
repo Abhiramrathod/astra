@@ -6,6 +6,9 @@ import io.astra.annotation.fact.Fact;
 import io.astra.annotation.goal.Goal;
 import org.springframework.stereotype.Component;
 
+/**
+ * Spring-managed agent for processing orders through payment validation, picking, and shipping.
+ */
 @Component
 @Agent
 public class OrderAgent {

@@ -2,6 +2,7 @@ package io.astra.api;
 
 import java.util.*;
 
+/** Definition of a compound task with its decompositions. */
 public class CompoundTaskDef {
     private final String name;
     private final String description;

@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.stream.*;
 
+/** Greedy planner that combines utility maximisation with goal-directed search. */
 public class HybridPlanner implements Planner {
     private static final Logger log = LoggerFactory.getLogger(HybridPlanner.class);
     private final AstraConfig config;
